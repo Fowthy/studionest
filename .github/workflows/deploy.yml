@@ -1,5 +1,4 @@
 name: "Build Images"
-
 on:
   workflow_call:
   workflow_dispatch:
