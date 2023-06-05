@@ -1,0 +1,7 @@
+fastapi
+pydantic
+uvicorn
+motor
+pika
+python-dotenv
+fastapi_security

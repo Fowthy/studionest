@@ -1,0 +1,9 @@
+fastapi
+pydantic
+uvicorn
+motor
+asyncio
+pika
+aio_pika
+python-dotenv
+fastapi_security

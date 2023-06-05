@@ -1,0 +1,15 @@
+httpx
+fastapi
+pydantic
+uvicorn
+aiohttp
+firebase-admin
+python-dotenv
+httplib2
+fastapi_security
+fastapi_permissions
+passlib
+motor
+aiofiles
+python-multipart
+boto3

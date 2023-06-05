@@ -1,0 +1,184 @@
+apiVersion: v1
+kind: List
+items:
+
+
+
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: api
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: api
+    template:
+      metadata:
+        labels:
+          app: api
+      spec:
+        containers:
+        - name: api
+          image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:gateway
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8080
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: roomman
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: roomman
+    template:
+      metadata:
+        labels:
+          app: roomman
+      spec:
+        containers:
+        - name: roomman
+          image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:roomman
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8812
+          env:
+          - name: MONGODB
+            value: "mongodb+srv://xfowth:finlooxbg1@roommanager.ef7zrxy.mongodb.net/?retryWrites=true&w=majority"
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: booking
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: booking
+    template:
+      metadata:
+        labels:
+          app: booking
+      spec:
+        containers:
+        - name: booking
+          image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:booking
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8813
+          env:
+          - name: MONGODB
+            value: "mongodb+srv://xfowth:finlooxbg1@booking.rkji63s.mongodb.net/?retryWrites=true&w=majority"
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: user
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: user
+    template:
+      metadata:
+        labels:
+          app: user
+      spec:
+        containers:
+        - name: user
+          image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:user
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8815
+          env:
+          - name: MONGODB
+            value: "mongodb+srv://xfowth:finlooxbg1@users.6l9wuxv.mongodb.net/?retryWrites=true&w=majority"
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: contentlib
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: contentlib
+    template:
+      metadata:
+        labels:
+          app: contentlib
+      spec:
+        containers:
+        - name: contentlib
+          image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:contentlib
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8821
+          env:
+          - name: MONGODB
+            value: "mongodb+srv://xfowth:finlooxbg1@contentlib.erfmgdg.mongodb.net/?retryWrites=true&w=majority"
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: payment
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: payment
+    template:
+      metadata:
+        labels:
+          app: payment
+      spec:
+        containers:
+        - name: payment
+          image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:payment
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8817
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: auth
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: auth
+    template:
+      metadata:
+        labels:
+          app: auth
+      spec:
+        containers:
+        - name: auth
+          image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:auth
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8491
+          env:
+          - name: MONGODB
+            value: "mongodb+srv://xfowth:finlooxbg1@users.6l9wuxv.mongodb.net/?retryWrites=true&w=majority"
+# - apiVersion: apps/v1
+#   kind: Deployment
+#   metadata:
+#     name: client
+#   spec:
+#     replicas: 1
+#     selector:
+#       matchLabels:
+#         app: client
+#     template:
+#       metadata:
+#         labels:
+#           app: client
+#       spec:
+#         containers:
+#         - name: client
+#           image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:client
+#           imagePullPolicy: Always
+#           ports:
+#           - containerPort: 3000
+#           env:
+#           - name: HOST
+#             value: "0.0.0.0"

@@ -1,0 +1,8 @@
+httpx
+fastapi
+pydantic
+uvicorn
+python-dotenv
+fastapi_security
+motor
+asyncio

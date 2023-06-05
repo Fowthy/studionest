@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: roomman
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: roomman
+  template:
+    metadata:
+      labels:
+        app: roomman
+    spec:
+      containers:
+      - name: roomman
+        image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:roomman
+        ports:
+        - containerPort: 8812
