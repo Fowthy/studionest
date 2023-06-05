@@ -2,7 +2,7 @@
 
   services:
     gateway:
-      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:gateway
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/api:latest
       container_name: api-service
       build: ./server/src/main/gateway
       ports:
@@ -11,7 +11,7 @@
         - studionest
 
     auth:
-      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:auth
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/auth:latest
       container_name: auth-service
       build: 
         context: ./server/src/main
@@ -23,7 +23,7 @@
       networks:
         - studionest
     roomman:
-      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:roomman
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/roomman:latest
       container_name: roomman-service
       build: 
         context: ./server/src/main
@@ -36,7 +36,7 @@
         - studionest
 
     booking:
-      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:booking
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/booking:latest
       container_name: booking-service
       build: 
         context: ./server/src/main
@@ -48,7 +48,7 @@
       networks:
         - studionest
     user:
-      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:user
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/user:latest
       container_name: user-service
       build: 
         context: ./server/src/main
@@ -61,7 +61,7 @@
         - studionest
 
     payment:
-      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:payment
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/payment:latest
       container_name: payment-service
       build: 
         context: ./server/src/main
@@ -74,7 +74,7 @@
         - studionest
 
     contentlib:
-      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:contentlib
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/contentlib:latest
       container_name: contentlib-service
       build: 
         context: ./server/src/main
@@ -85,22 +85,22 @@
         - ./server/src/main/contentlib/app/.env
       networks:
         - studionest
-    # client:
-    #   image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/studionest:client
-    #   container_name: client-service
-    #   build: "./web"
-    #   ports: 
-    #     - "3000:3000"
-    frontend:
-      build:
-        context: ./client
-        dockerfile: Dockerfile
-      ports:
+    client:
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/client:latest
+      container_name: client-service
+      build: "./client"
+      ports: 
         - "3000:3000"
-      volumes:
-        - ./client:/app
-        - /app/node_modules
-      networks:
-        - studionest
+    # frontend:
+    #   build:
+    #     context: ./client
+    #     dockerfile: Dockerfile
+    #   ports:
+    #     - "3000:3000"
+    #   volumes:
+    #     - ./client:/app
+    #     - /app/node_modules
+    #   networks:
+    #     - studionest
   networks:
     studionest:
