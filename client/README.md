@@ -1,38 +1,81 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1 align="center">
+Web Client Project
+</h1>
 
-## Getting Started
+This is the client-side application of our booking system, built with Next.js and styled with Tailwind CSS.
+## File Structure
 
-First, run the development server:
+Here's what you'll find in this directory:
 
 ```bash
+.
+├── public              # Publicly accessible files, like the favicon and images
+├── src                 # Source code of the application
+├── .env.development    # Environment variables for development
+├── .env.production     # Environment variables for production
+├── .eslintrc.json      # Configuration for ESLint
+├── .gitignore          # Specifies files to ignore in git
+├── Dockerfile          # Dockerfile for creating a Docker container of the client
+├── README.md           # The file you're reading right now
+├── amplify.yml         # AWS Amplify configuration file
+├── compose-dev.yaml    # Docker Compose file for local development
+├── next.config.js      # Next.js configuration file
+├── package-lock.json   # Exact dependency tree installed in node_modules
+├── package.json        # Defines npm behaviors and packages for the project
+├── postcss.config.js   # Configuration for PostCSS (used by Tailwind)
+├── tailwind.config.js  # Tailwind CSS configuration file
+└── tsconfig.json       # Configuration for TypeScript
+```
+## Development
+
+Before starting, make sure you have Node.js and npm installed.
+
+To get started, install the dependencies:
+
+
+```
+npm install
+```
+To start the development server:
+
+```
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To create a production build:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+npm run build
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+To start the production server:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```
+npm start or npm run start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Testing
 
-## Learn More
+ESLint is set up for code linting, and can be run with:
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+npm run lint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+The client can be containerized using Docker, and the Dockerfile is included in the project. This is especially useful for deployment to a container orchestration system like Kubernetes.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To build the Docker image:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+```
+docker build -t <your-image-name> .
+```
+Replace <your-image-name> with the name you want to give to your Docker image.
+
+For deployment on AWS Amplify, refer to the amplify.yml file.
+Environment Variables
+
+Two environment variable files are included: .env.development for development and .env.production for production. Make sure to fill these with the correct values before running the application.
