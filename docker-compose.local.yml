@@ -1,0 +1,93 @@
+version: "3.8"
+
+services:
+  gateway:
+    build: ./server/src/main/gateway
+    container_name: api-service
+    ports:
+      - "8080:8080"
+    networks:
+      - studionest
+
+  auth:
+    build: 
+      context: ./server/src/main
+      dockerfile: ./auth/Dockerfile
+    container_name: auth-service
+    ports:
+      - "8491:8491"
+    env_file:
+      - ./server/src/main/auth/app/.env
+    networks:
+      - studionest
+
+  roomman:
+    build: 
+      context: ./server/src/main
+      dockerfile: ./roomman/Dockerfile
+    container_name: roomman-service
+    ports:
+      - "8812:8812"
+    env_file:
+      - ./server/src/main/roomman/app/.env
+    networks:
+      - studionest
+
+  booking:
+    build: 
+      context: ./server/src/main
+      dockerfile: ./booking/Dockerfile
+    container_name: booking-service
+    ports:
+      - "8813:8813"
+    env_file:
+      - ./server/src/main/booking/app/.env
+    networks:
+      - studionest
+
+  user:
+    build: 
+      context: ./server/src/main
+      dockerfile: ./user/Dockerfile
+    container_name: user-service
+    ports:
+      - "8815:8815"
+    env_file:
+      - ./server/src/main/user/app/.env
+    networks:
+      - studionest
+
+  payment:
+    build: 
+      context: ./server/src/main
+      dockerfile: ./payment/Dockerfile
+    container_name: payment-service
+    ports:
+      - "8822:8822"
+    env_file:
+      - ./server/src/main/payment/app/.env
+    networks:
+      - studionest
+
+  contentlib:
+    build: 
+      context: ./server/src/main
+      dockerfile: ./contentlib/Dockerfile
+    container_name: contentlib-service
+    ports:
+      - "8821:8821"
+    env_file:
+      - ./server/src/main/contentlib/app/.env
+    networks:
+      - studionest
+
+  client:
+    build: "./client"
+    container_name: client-service
+    ports: 
+      - "3000:3000"
+    networks:
+      - studionest
+
+networks:
+  studionest:

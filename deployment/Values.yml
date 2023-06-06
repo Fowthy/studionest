@@ -1,0 +1,23 @@
+api:
+  image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/api:latest
+  mongodb: ""
+roomman:
+  image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/roomman:latest
+  mongodb: "mongodb+srv://xfowth:finlooxbg1@roommanager.ef7zrxy.mongodb.net/?retryWrites=true&w=majority"
+booking:
+  image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/booking:latest
+  mongodb: "mongodb+srv://xfowth:finlooxbg1@booking.rkji63s.mongodb.net/?retryWrites=true&w=majority"
+user:
+  image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/user:latest
+  mongodb: "mongodb+srv://xfowth:finlooxbg1@users.6l9wuxv.mongodb.net/?retryWrites=true&w=majority"
+contentlib:
+  image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/contentlib:latest
+  mongodb: "mongodb+srv://xfowth:finlooxbg1@contentlib.erfmgdg.mongodb.net/?retryWrites=true&w=majority"
+payment:
+  image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/payment:latest
+auth:
+  image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/auth:latest
+  mongodb: "mongodb+srv://xfowth:finlooxbg1@users.6l9wuxv.mongodb.net/?retryWrites=true&w=majority"
+client:
+  image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/client:latest
+  host: "0.0.0.0"

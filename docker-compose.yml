@@ -91,6 +91,8 @@
       build: "./client"
       ports: 
         - "3000:3000"
+      networks:
+        - studionest
         
     # frontend:
     #   build:

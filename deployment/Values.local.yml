@@ -1,0 +1,23 @@
+api:
+  image: api-service:latest
+  mongodb: ""
+roomman:
+  image: roomman-service:latest
+  mongodb: "mongodb+srv://xfowth:finlooxbg1@roommanager.ef7zrxy.mongodb.net/?retryWrites=true&w=majority"
+booking:
+  image: booking-service:latest
+  mongodb: "mongodb+srv://xfowth:finlooxbg1@booking.rkji63s.mongodb.net/?retryWrites=true&w=majority"
+user:
+  image: user-service:latest
+  mongodb: "mongodb+srv://xfowth:finlooxbg1@users.6l9wuxv.mongodb.net/?retryWrites=true&w=majority"
+contentlib:
+  image: contentlib-service:latest
+  mongodb: "mongodb+srv://xfowth:finlooxbg1@contentlib.erfmgdg.mongodb.net/?retryWrites=true&w=majority"
+payment:
+  image: payment-service:latest
+auth:
+  image: auth-service:latest
+  mongodb: "mongodb+srv://xfowth:finlooxbg1@users.6l9wuxv.mongodb.net/?retryWrites=true&w=majority"
+client:
+  image: client-service:latest
+  host: "0.0.0.0"
