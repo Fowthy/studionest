@@ -3,7 +3,7 @@
 # Set the AWS account ID, region and build path
 AWS_ACCOUNT_ID=628421111437
 REGION=eu-north-1
-BUILD_PATH=./server/src/main
+BUILD_PATH=../server/src/main
 
 # Generate a timestamp
 timestamp=$(date +%s)
