@@ -1,39 +1,55 @@
-Deployment with Helm
+<h1 align="center">Deployment Documentation</h1>
 
-Make sure that you have Helm installed on your machine. You can install it by following the instructions on the official Helm website.
+This folder contains files and scripts for deploying the application to AWS. The application is deployed as a series of pods and services using Kubernetes. We use Helm to manage the deployment.
 
-Once you have Helm installed, you can deploy your application using the Helm chart and the values file.
+## File Structure
 
-In the root directory of the application where the Helm chart is located, run the following command:
+Here's a basic outline of what you'll find in this directory:
 
-bash
 
-helm install [RELEASE_NAME] ./[CHART_DIRECTORY] -f ./[CHART_DIRECTORY]/values.yml
+```bash
+templates
+    ├── deployment.yaml 
+    ├── deployment-services.yaml       # Kubernetes Deployment configuration for the application pods and services
+├── deployment-client.yaml     # Kubernetes Deployment configuration for the client (Next.js)
+├── deployment-server.yaml    # Kubernetes Deployment configuration for the API Gateway
+├── Chart.yaml                 # Helm chart for deploying the application
+├── Values.local.yml           # Values file for local development
+└── Values.yml                 # Values file for production
+```
 
-Replace [RELEASE_NAME] with a name for this release of your application. Helm uses this name to track the various resources it deploys to your Kubernetes cluster.
+## Deployment Process
 
-Replace [CHART_DIRECTORY] with the name of the directory containing your Helm chart. This is typically named chart or the name of your application.
+Here's a basic guide to deploying the application:
 
-The -f flag specifies a custom values file to use for the Helm chart. In this case, we're using the values.yml file located in the Helm chart directory.
+* Ensure you have the necessary prerequisites: Helm, AWS CLI, and kubectl configured for your AWS cluster.
 
-Example:
+* Navigate to the deployment directory.
 
-bash
+* Install the Helm chart:
 
-helm install my-app ./chart -f ./chart/values.yml
+    ```bash
 
-This command deploys my-app using the Helm chart located in the chart directory and the values specified in values.yml.
+    helm install <release-name> ./ -f Values.yml
+    ```
 
-To uninstall the Helm release, you can use the following command:
+* Replace <release-name> with the name you want to give to your release. (studionest is the current deployment)
 
-bash
+For local development, use Values.local.yml:
 
-helm uninstall [RELEASE_NAME]
+```bash
 
-Example:
+helm install <release-name> ./ -f Values.local.yml
+```
 
-bash
+## Values Files
 
-helm uninstall my-app
+We have two values files: Values.local.yml for local development and Values.yml for production. These files contain configuration settings for the application, such as the paths to the Docker images to use for each component.
 
-This command removes all the Kubernetes resources associated with the release named my-app.
+## Further Reading
+
+    Helm
+    Kubernetes
+    AWS CLI
+
+For more detailed information about the deployment process, refer to the main README.md file.
