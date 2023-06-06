@@ -1,4 +1,4 @@
-name: "Deploy"
+name: "Build Images"
 on:
   workflow_call:
   workflow_dispatch:
@@ -32,6 +32,10 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
 
-      - name: Depoy to AWS EKS
+      - name: Build and push Docker images
         run: |
-          kubectl apply -f "deployment.yml"
+          echo "Building the images..."
+          docker-compose build
+          echo "Pushing the images..."
+          docker-compose push
+          echo "Images pushed to ECR"
