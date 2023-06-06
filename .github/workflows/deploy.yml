@@ -33,6 +33,7 @@ jobs:
 
 
       - name: Depoy to AWS EKS
-        run: |
-          
-          helm upgrade --install studionest1 ./deployment -f ./deployment/Values.yml
+        uses: wahyd4/kubectl-helm-action@master
+        with:
+          args: |
+            helm upgrade --install studionest ./deployment -f ./deployment/Values.yml
