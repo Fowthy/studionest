@@ -17,7 +17,6 @@ logger = logging.getLogger("uvicorn")
 
 def log_incoming_message(message: dict):
     logger.info('Here we got incoming message %s',message)
-    print('AAAAAA')
     print(message)
 
 
