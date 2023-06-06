@@ -34,4 +34,5 @@ jobs:
 
       - name: Depoy to AWS EKS
         run: |
-          kubectl apply -f "deployment.yml"
+          
+          helm upgrade --install studionest1 ./deployment -f ./deployment/Values.yml
