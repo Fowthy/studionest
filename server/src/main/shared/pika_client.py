@@ -1,5 +1,6 @@
 import json
 from ssl import SSLContext
+import time
 import uuid
 from aio_pika import connect_robust, IncomingMessage, ExchangeType, Message
 import pika
@@ -11,18 +12,31 @@ import logging
 
 logging.basicConfig()
 logger = logging.getLogger("uvicorn")
+max_retries = 7
 
 class PikaClient:
     def __init__(self, process_callable):
         credentials = pika.PlainCredentials('prplgkdh', 'qmbitoyvshaCmKaONi5hckYEaki1lDv6')
-        self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='rattlesnake.rmq.cloudamqp.com',port=5672, virtual_host='prplgkdh', credentials=credentials)
-        )
-
+        for i in range(max_retries):
+            try:
+                self.connection = pika.BlockingConnection(
+                    pika.ConnectionParameters(host='rattlesnake.rmq.cloudamqp.com', port=5672, virtual_host='prplgkdh', credentials=credentials)
+                )
+                self.connection.add_backpressure_callback(self.on_connection_closed)
+                break
+            except pika.exceptions.AMQPConnectionError:
+                if i < max_retries - 1:  # don't sleep on the last attempt
+                    time.sleep(1)
+                    logger.info('Failed to connect, retrying...')
+                else:
+                    raise
         self.channel = self.connection.channel()
-        self.process_callable = process_callable
-
         logger.info('Pika connection initialized')
+
+    def on_connection_closed(self, connection, method_frame):
+        logger.error('Connection closed, reopening...')
+        self.__init__(self.process_callable)
+
 
     def callback(self, method, properties, body):
         print(" [x] Received %r" % body)
