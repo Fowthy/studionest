@@ -6,9 +6,19 @@ export type RoomClass = {
     location: string;
     type: string;
     owner: string;
+    img: string;
     backline: string[];
 
   };
+
+export type BacklineClass = {
+  _id: string;
+  name: string;
+  desc: string;
+  quantity: number;
+  price: number;
+  img: string;
+}
 
 export type Item = {
   name: string;

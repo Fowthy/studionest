@@ -50,6 +50,10 @@ class Room(BaseModel):
             }
         }
     
+class Backline(BaseModel):
+    name: str
+    price: float
+    quantity: int
 class Booking(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     booker: User
@@ -58,7 +62,7 @@ class Booking(BaseModel):
     dateTo: datetime.datetime | None
     duration:int
     totalPrice: float | None
-    backline: List[str] 
+    backline: List[Backline] | None
     status: str | None
     class Config:
         allow_population_by_field_name = True

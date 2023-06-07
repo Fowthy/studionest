@@ -10,7 +10,10 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as Yup from 'yup'
-import { RoomClass } from "#/types";
+import { RoomClass, BacklineClass } from "#/types";
+import { useCookies } from "react-cookie";
+import PartnerTileGrid from "#/ui/web/PartnerTileGrid";
+import BacklineTileGrid from "#/ui/web/BacklineTileGrid";
 
 
 export default function Page({params}: any) {
@@ -21,9 +24,38 @@ export default function Page({params}: any) {
   }
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState<RoomClass>()
+  const [backlineData, setBacklineData] = useState<BacklineClass[]>([])
   const [dropdown, setDropdown] = useState("hidden")
   const [totalPrice, setTotalPrice] = useState(0)
   const [defaultSelectedRadio, setDefaultSelectedRadio] = useState(false)
+  const [cookies, setCookie, removeCookie] = useCookies(['studionest_user','studionest_user_token']);
+  const [authenticated, setAuthenticated] = useState(false);
+  const router = useRouter();
+  
+  useEffect(() => {
+    fetch("/api/auth/user", {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${cookies.studionest_user_token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(cookies,'hm',data)
+        if (data.detail === 'Invalid ID token') {
+        } else {
+          setAuthenticated(true);
+        }
+        setLoading(false);
+      })
+      .catch((err: any) => {
+        console.log(err, 'errrr');
+        setLoading(false);
+        setAuthenticated(false);
+
+      });
+    }, [cookies.studionest_user_token]);
     useEffect(() => {
       fetch(`/api/admin/rooms/room`, {
         method: 'GET',
@@ -35,11 +67,37 @@ export default function Page({params}: any) {
       .then((res) => res.json())
       .then((data) => {
         setData(data);
-        setLoading(false);
         setDefaultSelectedRadio(true)
         setTotalPrice(data.pricePerHour * 2)
-      });
+      }).then(() => {
+        fetch(`/api/admin/backline/backline`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data, 'backlineovic')
+          setBacklineData(data);
+          setLoading(false);
+        });
+      })
     }, []);
+    // useEffect(() => {
+    //   fetch(`/api/admin/backline/backline`, {
+    //     method: 'GET',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       }
+    //   })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setBacklineData(data);
+    //     setLoading(false);
+    //     setTotalPrice(data.pricePerHour * 2)
+    //   });
+    // }, []);
 
     const updateTotalPrice = (e: any) => {
       if(data != undefined) {
@@ -64,16 +122,9 @@ export default function Page({params}: any) {
               
               </Link>
 
-              <div className="flex items-center space-x-4">
-                {/* <Image
-                  layout="fixed"
-                  width={56}
-                  height={56}
-                  className="flex-shrink-f0 h-14 w-14 rounded-full bg-scale-400"
-                  src={partner.logo}
-                  alt={partner.title}
-                /> */}
-                <h1 className="h1" style={{ marginBottom: 0 }}>
+              <div className="flex items-center flex-col">
+                <img src={data.img}/>
+                <h1 className="h1 max-h-48 mt-2" style={{ marginBottom: 0 }}>
                   {data.name}
                 </h1>
               </div>
@@ -114,13 +165,12 @@ export default function Page({params}: any) {
                     Backline
                   </h2>
 
-                  {/* <div
-                    className="prose"
-                    dangerouslySetInnerHTML={{ __html: partner.overview }}
-                  /> */}
-                  <p>Cabinet + Head</p>
-                  <p>Drums</p>
-                  <p>Drugi raboti</p>
+                  {/* {backlineData && backlineData.map((backline: any, i: number) => { */}
+                    {/* // return ( */}
+                      <BacklineTileGrid backlines={backlineData} authenticated={authenticated}/>
+                      
+                    {/* ) */}
+                  {/* })} */}
                 </div>
 
                 <div>
@@ -193,18 +243,11 @@ export default function Page({params}: any) {
                           <span>{totalPrice} EUR</span>
                         </span>
                     </div>
-
+                    {authenticated ? (
                     <div className="flex items-center justify-between py-2">
                       <span className="text-scale-900"><button className="bg-gray-400 pl-4 pr-4 pt-1 pb-1 rounded-md border-rounded">Book</button></span>
-                      {/* <a
-                        href={partner.docs}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-brand-900 transition-colors hover:text-brand-800"
-                      > */}
-                       
-                      {/* </a> */}
-                    </div>
+                    </div>) : null
+                      }
                   </div>
                 </div>
               </div>
