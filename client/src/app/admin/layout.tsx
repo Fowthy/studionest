@@ -1,4 +1,4 @@
-import '../globals.css';
+// import '../globals.css';
 // import { AddressBar } from '#/ui/address-bar';
 import { GlobalNav } from '#/ui/global-nav';
 // import { VercelLogo } from '#/ui/vercel-logo';
@@ -8,7 +8,6 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
       <div className="overflow-y-scroll bg-gray-1100">
         <GlobalNav  />

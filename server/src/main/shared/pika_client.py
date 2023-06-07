@@ -15,14 +15,19 @@ logger = logging.getLogger("uvicorn")
 max_retries = 7
 
 class PikaClient:
-    def __init__(self, process_callable):
-        credentials = pika.PlainCredentials('prplgkdh', 'qmbitoyvshaCmKaONi5hckYEaki1lDv6')
+    def __init__(self, process_callable, max_retries=7):
+        self.credentials = pika.PlainCredentials('prplgkdh', 'qmbitoyvshaCmKaONi5hckYEaki1lDv6')
+        self.process_callable = process_callable
+        self.connect(max_retries)
+        self.channel = self.connection.channel()
+        logger.info('Pika connection initialized')
+
+    def connect(self, max_retries):
         for i in range(max_retries):
             try:
                 self.connection = pika.BlockingConnection(
-                    pika.ConnectionParameters(host='rattlesnake.rmq.cloudamqp.com', port=5672, virtual_host='prplgkdh', credentials=credentials)
+                    pika.ConnectionParameters(host='rattlesnake.rmq.cloudamqp.com', port=5672, virtual_host='prplgkdh', credentials=self.credentials)
                 )
-                self.connection.add_backpressure_callback(self.on_connection_closed)
                 break
             except pika.exceptions.AMQPConnectionError:
                 if i < max_retries - 1:  # don't sleep on the last attempt
@@ -30,8 +35,6 @@ class PikaClient:
                     logger.info('Failed to connect, retrying...')
                 else:
                     raise
-        self.channel = self.connection.channel()
-        logger.info('Pika connection initialized')
 
     def on_connection_closed(self, connection, method_frame):
         logger.error('Connection closed, reopening...')
@@ -68,14 +71,24 @@ class PikaClient:
         return connection
 
 class PikaClientPublish:
-    def __init__(self):
-            credentials = pika.PlainCredentials('prplgkdh', 'qmbitoyvshaCmKaONi5hckYEaki1lDv6')
-            self.connection = pika.BlockingConnection(
-                pika.ConnectionParameters(host='rattlesnake.rmq.cloudamqp.com',port=5672, virtual_host='prplgkdh', credentials=credentials)
-            )
+    def __init__(self, max_retries=7):
+        self.credentials = pika.PlainCredentials('prplgkdh', 'qmbitoyvshaCmKaONi5hckYEaki1lDv6')
+        self.connect(max_retries)
+        self.channel = self.connection.channel()
 
-            self.channel = self.connection.channel()
-
+    def connect(self, max_retries):
+        for i in range(max_retries):
+            try:
+                self.connection = pika.BlockingConnection(
+                    pika.ConnectionParameters(host='rattlesnake.rmq.cloudamqp.com',port=5672, virtual_host='prplgkdh', credentials=self.credentials)
+                )
+                break
+            except pika.exceptions.AMQPConnectionError:
+                if i < max_retries - 1:  # don't sleep on the last attempt
+                    time.sleep(1)
+                    logger.info('Failed to connect, retrying...')
+                else:
+                    raise
     def publish(self, exchange, routing_key, message):
         json_str = json_util.dumps(message)
         print(json_str)

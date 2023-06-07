@@ -93,6 +93,18 @@ GUEST = [Depends(isGuest)]
 
 router = APIRouter(prefix="/api/auth")
 
+ses = boto3.client('ses', 
+                          aws_access_key_id='AKIAZEUGRF2G4CNXZF6G', 
+                          aws_secret_access_key='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', 
+                          region_name='eu-north-1')
+
+# Email data model
+class EmailSchema(BaseModel):
+    subject: str
+    body: str
+    sender: str
+    recipient: str
+
 def sign_in_with_email_and_password(email, password, return_secure_token=True):
     payload = json.dumps({"email":email, "password":password, "return_secure_token":return_secure_token})
     FIREBASE_WEB_API_KEY = 'AIzaSyDAf98ET4naiHNKMgn1o059JB5YVk0RDQI' 
@@ -125,7 +137,28 @@ async def Signup(body:SignupUser):
         body.uid = user.uid
         body.principals = ["role:member"]
         body_dict = body.dict()
+
         await users.insert_one(body_dict)
+        response = ses.send_email(
+            Source = "xfowth@gmail.com",
+            # Source = email.sender,
+            Destination={
+                'ToAddresses': [
+                    # email.recipient,
+                    "xfowth@gmail.com"
+                ],
+            },
+            Message={
+                'Subject': {
+                    'Data': "Successfull registration",
+                },
+                'Body': {
+                    'Text': {
+                        'Data': "You have successfully registered to the platform",
+                    },
+                }
+            }
+        )   
         return JSONResponse(content={'message': f'Successfully created user {user.uid}'}, status_code=200)    
     except:
         return HTTPException(detail={'message': 'Error Creating User'}, status_code=400) 
@@ -196,38 +229,3 @@ async def PrivateEndpoint():
 @router.get('/public')
 async def PublicEndpoint():
     return "public route"
-
-ses = boto3.client('ses', 
-                          aws_access_key_id='AKIAZEUGRF2G4CNXZF6G', 
-                          aws_secret_access_key='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', 
-                          region_name='eu-north-1')
-
-# Email data model
-class EmailSchema(BaseModel):
-    subject: str
-    body: str
-    sender: str
-    recipient: str
-
-
-@router.post("/email")
-async def send_email(email: EmailSchema):
-    response = ses.send_email(
-        Source = email.sender,
-        Destination={
-            'ToAddresses': [
-                email.recipient,
-            ],
-        },
-        Message={
-            'Subject': {
-                'Data': email.subject,
-            },
-            'Body': {
-                'Text': {
-                    'Data': email.body,
-                },
-            }
-        }
-    )
-    return {"message": "Email sent successfully!", "response": response}

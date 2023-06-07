@@ -1,7 +1,7 @@
 "use client";
 import { host } from "#/constants";
 // import { Studio } from "#/types";
-import "#/app/globals.css";
+// import "#/app/globals.css";
 // import { redirect } from 'next/navigation';
 import { useState } from "react";
 import { ModernAlert } from "#/ui/alerts/modern-alert";

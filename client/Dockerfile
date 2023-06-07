@@ -17,10 +17,10 @@ COPY . .
 RUN npm run build
 
 # Set environment variable for Node.js
-ENV NODE_ENV production
+ENV NODE_ENV development
 
 # Expose port for the application
 EXPOSE 3000
 
 # Run the application
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

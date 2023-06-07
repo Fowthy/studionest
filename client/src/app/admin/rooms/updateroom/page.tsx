@@ -1,5 +1,5 @@
 "use client";
-import "#/app/globals.css";
+// import "#/app/globals.css";
 // import { redirect } from 'next/navigation';
 import { useState } from "react";
 import { ModernAlert } from "#/ui/alerts/modern-alert";
