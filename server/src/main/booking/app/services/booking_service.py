@@ -69,18 +69,23 @@ async def addBooking(booking: Booking) -> Booking | None:
         exists = await rooms.find_one({"id": booking.roomId})
         if exists is None:
             return None
+        print('a')
         
         user_exist = await collection.find_one({"uid": booking.booker.uid})
         if user_exist is None:
             u = booking.booker.dict()
             await users.insert_one(u)
-        
+
+
+        print(booking.dict())
         # Convert the Room object to a dictionary and insert it into the database
         booking.dateTo = booking.dateFrom + datetime.timedelta(hours=booking.duration)
         booking.status = "Reserved"
         dict = booking.dict()
         result = await collection.insert_one(dict)
         created = await collection.find_one({"_id": result.inserted_id})
+        print('bb')
+
         ses = boto3.client('ses', 
                           aws_access_key_id='AKIAZEUGRF2G4CNXZF6G', 
                           aws_secret_access_key='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', 
@@ -112,7 +117,11 @@ async def addBooking(booking: Booking) -> Booking | None:
         print("Error adding booking")
         return None
 
-
+# Delete all rooms
+async def deleteAllRooms():
+    collection = db['rooms']
+    await collection.delete_many({})
+    return True
     
 async def getAllBookings():
     # Get all bookings from the database

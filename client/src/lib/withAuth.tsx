@@ -30,7 +30,7 @@ const withAuth = (Component: React.ComponentType<any>) => {
           console.log(err, 'errrr');
           router.push('/auth');
         });
-    }, [cookies.studionest_user_token, router]);
+    }, [cookies,cookies.studionest_user_token, router]);
 
     if (loading) {
       return <div>Loading...</div>;

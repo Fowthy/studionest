@@ -20,7 +20,7 @@ export const mapUserData = async (user:any) => {
   };
 };
 
-type UserData = { id: any; email: any; token: any } | undefined;
+type UserData = { id: any; email: any; token: any, name: string, uid: string } | undefined;
 
   
 const useUser = () => {
@@ -49,7 +49,7 @@ const useUser = () => {
           removeCookie("studionest_user_token")
           setUser(undefined); 
     });
-  }, []);
+  }, [cookies.studionest_user_token]);
 
   return { user, logout };
 };

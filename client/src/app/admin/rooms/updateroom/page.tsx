@@ -72,6 +72,8 @@ export default function Page() {
             <Spinner position="right" visible={loading} />
       <div className="container grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-1">
         <Image
+          width={40}
+          height={40}
           className="rounded w-36 h-36 m-auto"
           src="https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1240w,f_auto,q_auto:best/rockcms/2023-01/230101-joe-biden-jm-0944-489dbe.jpg"
           alt="Extra large avatar"

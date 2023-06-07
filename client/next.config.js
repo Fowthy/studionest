@@ -3,6 +3,9 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  images: {
+    domains: ['amplify-amplify7ba61ed5c67b4-staging-234108-deployment.s3.amazonaws.com'],
+  },
   webpackDevMiddleware: config => {
     config.watchOptions = {
       poll: 1000,

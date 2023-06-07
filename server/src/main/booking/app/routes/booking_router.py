@@ -24,8 +24,9 @@ async def getBookingByUser(uid: str):
 @router.post("/booking", status_code=201)
 async def addBooking(booking: Booking):
     created = await bookingService.addBooking(booking)
-    if not created:
-        raise HTTPException(status_code=400, detail="A room with this name already exists.")
+    # if not created:
+        # raise HTTPException(status_code=400, detail="Error creating booking.")
+        
     return created
 
 # Delete booking by id
@@ -40,6 +41,16 @@ async def deleteBooking(id: str):
 async def getAvailableRooms():
     rooms = await bookingService.getAvailableRooms()
     return rooms
+
+# Delete all rooms
+@router.delete("/rooms", status_code=204)
+async def deleteRooms():
+    deleted = await bookingService.deleteAllRooms()
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Rooms not found")
+    return Response(status_code=204)
+
+
 
 # Update a room
 # @router.put("/room", status_code=200)

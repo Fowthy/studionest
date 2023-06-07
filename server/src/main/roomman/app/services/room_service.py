@@ -104,6 +104,11 @@ async def createRoom(roomdata: str = Form(...), image: Optional[UploadFile] = No
     # else return the found room
     return Room.parse_obj(rooms_found[0])
 
+# Delete all rooms
+async def deleteAllRooms() -> None:
+    collection = db['rooms']
+    await collection.delete_many({})
+    return True
 
 # Gets all rooms from the database
 async def getAllRooms() -> List[Room] | None:

@@ -94,12 +94,12 @@ export default function Page()  {
                         </p>
                         <h2>4. Termination</h2>
                         <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                        Users may terminate their account at any time, for any reason, by [explain the account deletion process, e.g., "following the account deletion process in the account settings panel"]. Upon account termination, we will delete your name from our database. Your email and encrypted password are stored with Google Firebase, and their deletion will be carried out in accordance with Google Firebase's data retention policy.
+                        Users may terminate their account at any time, for any reason, by [explain the account deletion process, e.g., following the account deletion process in the account settings panel]. Upon account termination, we will delete your name from our database. Your email and encrypted password are stored with Google Firebase, and their deletion will be carried out in accordance with Google Firebases data retention policy.
                         We may also terminate or suspend your access to the services immediately, without prior notice or liability, for any reason whatsoever, including, without limitation, if you breach these terms and conditions.
                         Again, please make sure to consult with a legal professional before finalizing and publishing these terms and conditions. They will be able to provide advice that is more tailored to your specific service and jurisdiction.                        </p>
                         <h2>5. Changes to Terms</h2>
                         <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                        We reserve the right, at our sole discretion, to modify or replace these terms at any time. If a revision is material, we will make reasonable efforts to provide at least 30 days' notice prior to any new terms taking effect.                        
+                        We reserve the right, at our sole discretion, to modify or replace these terms at any time. If a revision is material, we will make reasonable efforts to provide at least 30 days notice prior to any new terms taking effect.                        
                         </p>
                     </div>
                     <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">

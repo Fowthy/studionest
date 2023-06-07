@@ -10,8 +10,20 @@ export type RoomClass = {
     backline: string[];
 
   };
-
+export type BookingClass = {
+    _id: string;
+    dateTo: string;
+    duration: number;
+    dateFrom: string;
+    roomId: string;
+    backline: Backline[];
+}
+export type Backline = {
+  name: string;
+  quantity: number;
+  price: number;
 export type BacklineClass = {
+  id: any;
   _id: string;
   name: string;
   desc: string;

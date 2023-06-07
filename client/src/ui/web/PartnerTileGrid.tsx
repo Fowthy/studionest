@@ -35,11 +35,11 @@ export default function PartnerTileGrid({
                     className='border-rounded border-none group block space-y-1.5 rounded-lg text-gray-900 bg-slate-100 dark:bg-gray-900 px-5 py-3 dark:hover:bg-gray-800'>
                     <div className="flex w-full space-x-6">
                       <div className="w-15 h-15 transition-all scale-100 group-hover:scale-110">
-                        <img
-                          width={40}
-                          height={40}
-                          className="w-15 h-15 bg-gray-300 rounded-full"
-                          src={"https://amplify-amplify7ba61ed5c67b4-staging-234108-deployment.s3.eu-north-1.amazonaws.com/IMG_5336.JPG"}
+                        <Image
+                          width={50}
+                          height={100}
+                          className="bg-gray-300 rounded-full h-14 w-14"
+                          src={p.img}
                           alt={"nz"}
                         />
                       </div>

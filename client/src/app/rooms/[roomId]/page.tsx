@@ -10,10 +10,12 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as Yup from 'yup'
+import Image from 'next/image'
 import { RoomClass, BacklineClass } from "#/types";
 import { useCookies } from "react-cookie";
 import PartnerTileGrid from "#/ui/web/PartnerTileGrid";
 import BacklineTileGrid from "#/ui/web/BacklineTileGrid";
+import { useUser } from "#/lib/useUser";
 
 
 export default function Page({params}: any) {
@@ -30,6 +32,10 @@ export default function Page({params}: any) {
   const [defaultSelectedRadio, setDefaultSelectedRadio] = useState(false)
   const [cookies, setCookie, removeCookie] = useCookies(['studionest_user','studionest_user_token']);
   const [authenticated, setAuthenticated] = useState(false);
+  const [quantity, setQuantity] = useState<Record<string, number>>({});
+  const [duration, setDuration] = useState(0)
+  const user = useUser();
+
   const router = useRouter();
   
   useEffect(() => {
@@ -55,7 +61,7 @@ export default function Page({params}: any) {
         setAuthenticated(false);
 
       });
-    }, [cookies.studionest_user_token]);
+    }, [cookies,cookies.studionest_user_token]);
     useEffect(() => {
       fetch(`/api/admin/rooms/room`, {
         method: 'GET',
@@ -83,26 +89,73 @@ export default function Page({params}: any) {
           setLoading(false);
         });
       })
-    }, []);
-    // useEffect(() => {
-    //   fetch(`/api/admin/backline/backline`, {
-    //     method: 'GET',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       }
-    //   })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setBacklineData(data);
-    //     setLoading(false);
-    //     setTotalPrice(data.pricePerHour * 2)
-    //   });
-    // }, []);
+    }, [params.roomId]);
+
+    console.log(quantity, 'the right place')
+    const placeBooking = () => {
+      if(authenticated) {
+        setLoading(true);
+        let selectedBackline = []
+        for (const [key, value] of Object.entries(quantity)) {
+          if(value != 0) {
+            selectedBackline.push({
+              id: key,
+              quantity: value
+            })
+          }
+        }
+        // Find the real backline from the backlineData using selectedBackline id with lambda, no for loops
+        let realBackline: any = []
+        selectedBackline.forEach((selectedBacklineItem) => {
+          backlineData.forEach((backlineDataItem) => {
+            if(selectedBacklineItem.id == backlineDataItem._id) {
+              realBackline.push({
+                quantity: selectedBacklineItem.quantity,
+                name: backlineDataItem.name,
+                price: backlineDataItem.price,
+              })
+            }
+          })
+        })
+        
+
+
+        let body = {
+          roomId: params.roomId,
+          duration: duration,
+          totalPrice: totalPrice,
+          dateFrom: "2023-07-30T09:30:00Z",
+          booker: {
+            email: user.user?.email,
+            name: user.user?.name,
+            uid: user.user?.uid,
+          },
+          backline: realBackline
+
+        }
+        console.log(body)
+
+        fetch(`/api/booking/createbooking`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            },
+          body: JSON.stringify(body)
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          router.push(`/booking/${data._id}`)
+          setLoading(false);
+        });
+      }
+    }
 
     const updateTotalPrice = (e: any) => {
       if(data != undefined) {
         setTotalPrice(data.pricePerHour * e.target.value)
         setDefaultSelectedRadio(false)
+        setDuration(e.target.value)
       }
     }
     
@@ -123,7 +176,7 @@ export default function Page({params}: any) {
               </Link>
 
               <div className="flex items-center flex-col">
-                <img src={data.img}/>
+                <Image alt="neshto" src={data.img} width={1000} height={1000}/>
                 <h1 className="h1 max-h-48 mt-2" style={{ marginBottom: 0 }}>
                   {data.name}
                 </h1>
@@ -136,48 +189,22 @@ export default function Page({params}: any) {
                   marginRight: 'calc(50% - 50vw)',
                 }}
               >
-                
-                  {/* {partner.images.map((image: any, i: number) => {
-                    return (
-                      <SwiperSlide key={i}>
-                        <div className="relative ml-3 mr-3 block cursor-move overflow-hidden rounded-md">
-                          <Image
-                            layout="responsive"
-                            objectFit="contain"
-                            width={1460}
-                            height={960}
-                            src={image}
-                            alt={partner.title}
-                          />
-                        </div>
-                      </SwiperSlide>
-                    )
-                  })} */}
-                {/* </Swiper> */}
               </div>
 
               <div className="grid gap-3 space-y-16 lg:grid-cols-4 lg:space-y-0">
                 <div className="lg:col-span-3">
                   <h2
                     className="text-scale-1200"
-                    style={{ fontSize: '1.5rem', marginBottom: '1rem' }}
-                  >
+                    style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
                     Backline
                   </h2>
-
-                  {/* {backlineData && backlineData.map((backline: any, i: number) => { */}
-                    {/* // return ( */}
-                      <BacklineTileGrid backlines={backlineData} authenticated={authenticated}/>
-                      
-                    {/* ) */}
-                  {/* })} */}
+                  <BacklineTileGrid backlines={backlineData} authenticated={authenticated} quantity={quantity} setQuantity={setQuantity}/>
                 </div>
 
                 <div>
                   <h2
                     className="text-scale-1200"
-                    style={{ fontSize: '1.5rem', marginBottom: '1rem' }}
-                  >
+                    style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
                     Details
                   </h2>
 
@@ -245,7 +272,7 @@ export default function Page({params}: any) {
                     </div>
                     {authenticated ? (
                     <div className="flex items-center justify-between py-2">
-                      <span className="text-scale-900"><button className="bg-gray-400 pl-4 pr-4 pt-1 pb-1 rounded-md border-rounded">Book</button></span>
+                      <span className="text-scale-900"><button onClick={placeBooking} className="bg-gray-400 pl-4 pr-4 pt-1 pb-1 rounded-md border-rounded">Book</button></span>
                     </div>) : null
                       }
                   </div>

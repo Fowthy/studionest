@@ -35,6 +35,14 @@ async def createRoom(room: str = Form(...), image: UploadFile = File(None)):
     except Exception as e:
         raise HTTPException(status_code=400,detail=e)
     
+# Delete all rooms
+@router.delete("/rooms", status_code=204)
+async def deleteRooms():
+    deleted = await roomService.deleteAllRooms()
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Rooms not found")
+    return Response(status_code=204)
+
 # Create a room
 # @router.post("/image", status_code=201)
 # async def addImage(file: UploadFile = File(...)):
