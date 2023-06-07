@@ -85,14 +85,14 @@
         - ./server/src/main/contentlib/app/.env
       networks:
         - studionest
-    client:
-      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/client:latest
-      container_name: client-service
-      build: "./client"
-      ports: 
-        - "3000:3000"
-      networks:
-        - studionest
+    # client:
+    #   image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/client:latest
+    #   container_name: client-service
+    #   build: "./client"
+    #   ports: 
+    #     - "3000:3000"
+    #   networks:
+    #     - studionest
         
     # frontend:
     #   build:
