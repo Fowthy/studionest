@@ -21,12 +21,6 @@ items:
           imagePullPolicy: Always
           ports:
           - containerPort: 8080
-          env:
-          - name: MONGODB
-            valueFrom:
-              secretKeyRef:
-                name: api-secret
-                key: MONGODB
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -52,7 +46,7 @@ items:
             valueFrom:
               secretKeyRef:
                 name: roomman-secret
-                key: MONGODB
+                key: ROOMMAN_MONGODB_CONNECTION_STRING
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -78,7 +72,7 @@ items:
             valueFrom:
               secretKeyRef:
                 name: booking-secret
-                key: MONGODB
+                key: BOOKING_MONGODB_CONNECTION_STRING
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -104,7 +98,7 @@ items:
             valueFrom:
               secretKeyRef:
                 name: user-secret
-                key: MONGODB
+                key: USER_MONGODB_CONNECTION_STRING
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -130,7 +124,7 @@ items:
             valueFrom:
               secretKeyRef:
                 name: contentlib-secret
-                key: MONGODB
+                key: CONTENTLIB_MONGODB_CONNECTION_STRING
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -176,7 +170,7 @@ items:
             valueFrom:
               secretKeyRef:
                 name: auth-secret
-                key: MONGODB
+                key: AUTH_MONGODB_CONNECTION_STRING
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -202,4 +196,4 @@ items:
             valueFrom:
               secretKeyRef:
                 name: client-secret
-                key: HOST
+                key: CLIENT_HOST

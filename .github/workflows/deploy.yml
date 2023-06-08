@@ -32,9 +32,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Depoy to AWS EKS
-        uses: wahyd4/kubectl-helm-action@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-        with:
-          args: |
-            helm upgrade --install studionest ./deployment -f ./deployment/Values.yml
+        run: |
+          echo "Deploying..."
+          kubectl delete -f "./deployment/deployment.yml"
+          kubectl apply -f "./deployment/deployment.yml"
