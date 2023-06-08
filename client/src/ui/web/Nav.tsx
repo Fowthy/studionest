@@ -46,7 +46,7 @@ const Nav = () => {
         setAuthenticated(false);
 
       });
-    }, [cookies.studionest_user_token]);
+    }, [cookies.studionest_user_token, cookies]);
       
     console.log(authenticated, 'authenticated')
     if(loading) {

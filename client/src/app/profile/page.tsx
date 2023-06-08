@@ -15,43 +15,45 @@ function Page()  {
   const [cookies, setCookie] = useCookies(['studionest_user_token']);
 
   useEffect(() => {
-    setLoading(true);
-    fetch("/api/auth/user", {
-      method: "GET",
-
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': `Bearer ${cookies.studionest_user_token}}`
-      }
-    }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      }).then(() => {
-        if(!data) return
-        fetch(`/api/booking/uid`, {
-          method: 'GET',
+    const fetchData = async () => {
+      setLoading(true);
+  
+      try {
+        const response = await fetch("/api/auth/user", {
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
-            'uid': data.uid
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${cookies.studionest_user_token}`
           }
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data, 'data')
-            setBookings(data)
-            setLoading(false);
-          } 
-          )
-      })
-
+        });
+        const data = await response.json();
+        setData(data);
+  
+        if (data) {
+          const bookingResponse = await fetch(`/api/booking/uid`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'uid': data.uid
+            }
+          });
+          const bookingsData = await bookingResponse.json();
+          setBookings(bookingsData);
+        }
+  
+        setLoading(false);
+      } catch (error) {
+        console.log(error, 'errrr');
+        setLoading(false);
+      }
+    };
+  
+    fetchData();
   }, [cookies.studionest_user_token]);
 
   if(loading || !data) return <div>Loading...</div>
 
-  console.log(data)
+  console.log(bookings, 'bookingsssss')
   return (
     <div>
           <SectionContainer>
@@ -84,32 +86,34 @@ function Page()  {
                     style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
                     Past Bookings
                   </h2>
-                  {bookings.map((booking) => (
-                   <div><p>{booking.dateFrom}</p><p>{booking.totalPrice}</p></div>
+                  <div className='booking-container max-h-60 overflow-y-auto'>
+                  {bookings.map((booking, i) => (
+                   <div key={i} className='mb-2'><p>Date: {booking.dateFrom}</p><p>Total Price: {booking.totalPrice}</p></div>
                   ))}
+                  </div>
                 </div>
-                <div>
-                  <h2
-                    className="text-scale-1200"
-                    style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
-                    Details
-                  </h2>
+                <div className='flex flex-col justify-between'>
                   <div className="divide-y text-scale-1200">
+                    <h2
+                      className="text-scale-1200"
+                      style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
+                      Details
+                    </h2>
                     <div className="flex items-center justify-between py-2">
                       <span className="text-scale-900">Name</span>
                       <span className="text-scale-1200">{data.name}</span>
                     </div>
 
                     <div className="flex items-center justify-between py-2">
-                      <span className="text-scale-900">Email</span>
-                      <Link
-                        href={`/partners/`}
-                      >
                           {data.email}
-                      </Link>
                     </div>
                   
                   </div>
+                    <div className="flex items-center justify-between p-0">
+                         <button className='delete-profile focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900'>
+                            Delete profile
+                         </button>
+                    </div>
                 </div>
               </div>
             </div>

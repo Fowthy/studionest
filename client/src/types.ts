@@ -1,3 +1,5 @@
+import { User } from "firebase/auth";
+
 export type RoomClass = {
     _id: string;
     name: string;
@@ -10,6 +12,11 @@ export type RoomClass = {
     backline: string[];
 
   };
+export type UserClass = {
+    name: string;
+    email: string;
+    uid: string;
+}
 export type BookingClass = {
     _id: string;
     dateTo: string;
@@ -17,11 +24,14 @@ export type BookingClass = {
     dateFrom: string;
     roomId: string;
     backline: Backline[];
+    totalPrice: number;
+    booker: UserClass;
 }
 export type Backline = {
   name: string;
   quantity: number;
   price: number;
+}
 export type BacklineClass = {
   id: any;
   _id: string;
@@ -40,5 +50,4 @@ export type Item = {
 export type Content = {
     name: string;
     items: Item[];
-
 };

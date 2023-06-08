@@ -25,7 +25,7 @@ export default function PartnerTileGrid({
   return (
     <>
       {Object.keys(partnersByCategory).map((category, key) => (
-        <div key={key} id={category.toLowerCase()} className="space-y-8 ">
+        <div key={key} id={category.toLowerCase()} className="space-y-8 cursor-pointer">
           {!hideCategories && <h2 className="h2 text-xl text-gray-900 dark:text-gray-50">{category}</h2>}
           <div className="grid  gap-5 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 lg:max-w-none">
             {partnersByCategory[category].map((p, key) => (

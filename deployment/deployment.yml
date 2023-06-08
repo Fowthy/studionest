@@ -6,7 +6,6 @@ items:
   metadata:
     name: api
   spec:
-    replicas: 1
     selector:
       matchLabels:
         app: api
@@ -21,12 +20,16 @@ items:
           imagePullPolicy: Always
           ports:
           - containerPort: 8080
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 50m
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
     name: roomman
   spec:
-    replicas: 1
     selector:
       matchLabels:
         app: roomman
@@ -47,12 +50,16 @@ items:
               secretKeyRef:
                 name: roomman-secret
                 key: ROOMMAN_MONGODB_CONNECTION_STRING
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 50m
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
     name: booking
   spec:
-    replicas: 1
     selector:
       matchLabels:
         app: booking
@@ -73,12 +80,16 @@ items:
               secretKeyRef:
                 name: booking-secret
                 key: BOOKING_MONGODB_CONNECTION_STRING
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 50m
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
     name: user
   spec:
-    replicas: 1
     selector:
       matchLabels:
         app: user
@@ -99,12 +110,16 @@ items:
               secretKeyRef:
                 name: user-secret
                 key: USER_MONGODB_CONNECTION_STRING
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 50m
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
     name: contentlib
   spec:
-    replicas: 1
     selector:
       matchLabels:
         app: contentlib
@@ -125,12 +140,16 @@ items:
               secretKeyRef:
                 name: contentlib-secret
                 key: CONTENTLIB_MONGODB_CONNECTION_STRING
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 50m
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
     name: payment
   spec:
-    replicas: 1
     selector:
       matchLabels:
         app: payment
@@ -145,12 +164,16 @@ items:
           imagePullPolicy: Always
           ports:
           - containerPort: 8817
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 50m
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
     name: auth
   spec:
-    replicas: 1
     selector:
       matchLabels:
         app: auth
@@ -171,12 +194,16 @@ items:
               secretKeyRef:
                 name: auth-secret
                 key: AUTH_MONGODB_CONNECTION_STRING
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 50m
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
     name: client
   spec:
-    replicas: 1
     selector:
       matchLabels:
         app: client
@@ -197,3 +224,8 @@ items:
               secretKeyRef:
                 name: client-secret
                 key: CLIENT_HOST
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 50m

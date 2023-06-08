@@ -16,6 +16,10 @@ import { useCookies } from "react-cookie";
 import PartnerTileGrid from "#/ui/web/PartnerTileGrid";
 import BacklineTileGrid from "#/ui/web/BacklineTileGrid";
 import { useUser } from "#/lib/useUser";
+// import useSWR from 'swr'
+
+
+// const fetcher = (...args: any) => 
 
 
 export default function Page({params}: any) {
@@ -33,67 +37,63 @@ export default function Page({params}: any) {
   const user = useUser();
 
   const router = useRouter();
+
+  // const { data, error, isLoading } = useSWR('/api/user', fetcher)
+
   
   useEffect(() => {
-    fetch("/api/auth/user", {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${cookies.studionest_user_token}`
-      }
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(cookies,'hm',data)
-        if (data.detail === 'Invalid ID token') {
-        } else {
-          setAuthenticated(true);
-        }
-        setLoading(false);
-      })
-      .catch((err: any) => {
-        console.log(err, 'errrr');
-        setLoading(false);
-        setAuthenticated(false);
-
-      });
-    }, [cookies,cookies.studionest_user_token]);
-    useEffect(() => {
-      fetch(`/api/booking/id`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'booking-id': params.bookingId,
-          }
-      })
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-         console.log('testovic', data)
-        setLoading(false)
-      }).then(() => {
-        if(data == undefined) return
-        fetch(`/api/admin/rooms/room`, {
-          
-          method: 'GET',
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/auth/user", {
+          method: "GET",
           headers: {
             'Content-Type': 'application/json',
-            'room-id': data.roomId,
+            'Authorization': `Bearer ${cookies.studionest_user_token}`
+          }
+        });
+        const data = await response.json();
+  
+        console.log(cookies, 'hm', data);
+  
+        if (data.detail === 'Invalid ID token') {
+          // Handle invalid ID token case
+        } else {
+          setAuthenticated(true);
+  
+          const bookingResponse = await fetch(`/api/booking/id`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'booking-id': params.bookingId,
             }
-        })
-        .then((res) => res.json())
-        .then((data) => {
-          setRoomData(data);
-           console.log('testovic', data)
-          setLoading(false)
-        })
-      })
-            
-    }, [params.roomId]);
-
-    
-
-    
+          });
+          const bookingData = await bookingResponse.json();
+          setData(bookingData);
+  
+          if (bookingData) {
+            const roomResponse = await fetch(`/api/admin/rooms/room`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'room-id': bookingData.roomId,
+              }
+            });
+            const roomData = await roomResponse.json();
+            setRoomData(roomData);
+          }
+  
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log(error, 'errrr');
+        setLoading(false);
+        setAuthenticated(false);
+      }
+    };
+  
+    fetchData();
+  }, [params.bookingId, cookies, cookies.studionest_user_token, params.roomId]);
+      console.log('biggest test ever', data, roomData)
     if(loading || data == undefined || roomData == undefined ) {
       return <p>Loading..</p>
     }

@@ -49,7 +49,7 @@ const useUser = () => {
           removeCookie("studionest_user_token")
           setUser(undefined); 
     });
-  }, [cookies.studionest_user_token]);
+  }, [cookies.studionest_user_token, removeCookie, setCookie]);
 
   return { user, logout };
 };
