@@ -5,7 +5,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       //get token from request header
       let token = req.headers.authorization;
-      console.log(token, 'test before')
+      console.log(token, 'testaaaaaaaaaaaaaa')
 
       const requestOptions = {
         method: 'GET',

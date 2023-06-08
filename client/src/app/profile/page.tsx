@@ -17,6 +17,8 @@ function Page()  {
   useEffect(() => {
     setLoading(true);
     fetch("/api/auth/user", {
+      method: "GET",
+
       headers: {
         "Content-Type": "application/json",
         'Authorization': `Bearer ${cookies.studionest_user_token}}`
