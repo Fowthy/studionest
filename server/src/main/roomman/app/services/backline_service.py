@@ -1,17 +1,15 @@
 
+from json import loads
 import os
 from typing import List
 from uuid import uuid4
 from bson import ObjectId
-from pyparsing import Optional
+from typing import List, Optional
 from src.main.roomman.app.models import Backline, BacklineBody
 from src.main.roomman.app.mongodb import db
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, Form, UploadFile, File
 import boto3
 from botocore.exceptions import NoCredentialsError
-
-
-
 
 async def upload_file(name: str, file: UploadFile = File(...)) -> str:
     try:
@@ -36,9 +34,12 @@ async def upload_file(name: str, file: UploadFile = File(...)) -> str:
 
 
 # Creates a backline in the database
-async def createBackline( backline: BacklineBody, image: Optional[UploadFile] = None) -> Backline | None:
+async def createBackline( backlinedata: str = Form(...), image: Optional[UploadFile] = None) -> Backline | None:
     # Get the database and collection
     collection = db['backline']
+
+    backline = Backline.parse_obj(loads(backlinedata))
+
 
     # Check if a backline with the same name already exists
     exists = await collection.find_one({"name": backline.name})

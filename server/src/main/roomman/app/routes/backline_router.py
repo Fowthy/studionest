@@ -1,6 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, FastAPI, Header, Response
+from click import File
+from fastapi import APIRouter, Depends, HTTPException, FastAPI, Header, Response, UploadFile
 from src.main.roomman.app.models import BacklineBody
 from src.main.roomman.app.services import backline_service
+from fastapi import FastAPI, Form, UploadFile, File
+
 
 router = APIRouter(prefix="/api/roomman")
 
@@ -12,8 +15,8 @@ async def getBackline():
 
 # Create a backline
 @router.post("/backline", status_code=201)
-async def createBackline(studio: BacklineBody):
-    created = await backline_service.createBackline(studio)
+async def createBackline(backline: str = Form(...), image: UploadFile = File(None)):
+    created = await backline_service.createBackline(backline, image)
     if not created:
         raise HTTPException(status_code=400, detail="A backline with this name already exists.")
     return created

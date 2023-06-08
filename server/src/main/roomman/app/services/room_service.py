@@ -114,7 +114,6 @@ async def deleteAllRooms() -> None:
 async def getAllRooms() -> List[Room] | None:
     # Get the database and collection
     collection = db['rooms']
-    print('TEST HERE OMG OMG OMG AA A A A A A A')
     print(os.environ.get('MONGODB'))
 
 

@@ -7,6 +7,7 @@ import SectionContainer from '#/ui/web/SectionContainer';
 import Link from 'next/link';
 import Image from 'next/image'
 import {UserClass, BookingClass} from '#/types';
+import BookingTileGrid from '#/ui/web/BookingTileGrid';
 function Page()  {
   const { user, logout } = useUser();
   const [loading, setLoading] = useState(true)
@@ -65,8 +66,8 @@ function Page()  {
               
               </Link>
 
-              <div className="flex items-center flex-col">
-                {/* <Image alt="neshto" src={roomData.img} width={1000} height={1000}/> */}
+              <div className="flex items-center flex-col rounded-full">
+                <Image alt="neshto" className="rounded-full h-72 w-72" src={"https://amplify-amplify7ba61ed5c67b4-staging-234108-deployment.s3.amazonaws.com/648248915f6c1b63152b7a6a-de63554f-b252-4b91-95d6-f62a1a417744.jpg"} width={1000} height={1000}/>
                
               </div>
 
@@ -87,9 +88,7 @@ function Page()  {
                     Past Bookings
                   </h2>
                   <div className='booking-container max-h-60 overflow-y-auto'>
-                  {bookings.map((booking, i) => (
-                   <div key={i} className='mb-2'><p>Date: {booking.dateFrom}</p><p>Total Price: {booking.totalPrice}</p></div>
-                  ))}
+                 <BookingTileGrid bookings={bookings}/>
                   </div>
                 </div>
                 <div className='flex flex-col justify-between'>

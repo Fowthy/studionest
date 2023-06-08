@@ -13,7 +13,7 @@ export default function BacklineTileGrid({
   quantity, 
   setQuantity
 }: {
-  backlines: BacklineClass[]
+  backlines: any[]
   authenticated: boolean,
   hideCategories?: boolean,
   quantity: Record<string, number>,
@@ -44,7 +44,7 @@ export default function BacklineTileGrid({
   }
   return (
     <>
-      {backlines.map((category, key) => (
+      {backlines.length > 0 ? backlines.map((category, key) => (
         <div key={key} id={category.name.toLowerCase()} className="space-y-8 backline-list max-h-96 overflow-y-auto">
               <div >
            
@@ -70,8 +70,6 @@ export default function BacklineTileGrid({
                     </div>
                     {authenticated && (
                     <div className="custom-number-input w-32">
-                      <label htmlFor="custom-input-number" className="w-full text-gray-700 text-sm font-semibold">Counter Input
-                      </label>
                       <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
                         <button data-action="decrement" onClick={() => decrementQuantity(category._id)} className=" bg-gray-300 dark:bg-gray-600 dark:text-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none">
                           <span className="m-auto text-2xl font-thin">−</span>
@@ -86,7 +84,7 @@ export default function BacklineTileGrid({
                   </div>
               </div>
         </div>
-      ))}
+      )) : <p>No backline available for this room</p>}
     </>
   )
 }
