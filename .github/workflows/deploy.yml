@@ -36,10 +36,17 @@ jobs:
         uses: ianbelcher/eks-kubectl-action@master
         with:
           cluster_name: "studionest"
-          args: |
-            delete -f "./deployment/deployment.yml"
-            apply -f "./deployment/deployment.yml"
+          args: >
+            delete -f "./deployment/deployment.yml" &&
+            apply -f "./deployment/deployment.yml" &&
             echo "Deployed!"
+            
+          # run: |
+          #   echo "Building the images..."
+          #   docker-compose build
+          #   echo "Pushing the images..."
+          #   docker-compose push
+          #   echo "Images pushed to ECR"
 
 
       # --- #
