@@ -32,21 +32,12 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build and push CONTAINER_NAME
-        uses: ianbelcher/eks-kubectl-action@master
-        with:
-          cluster_name: "studionest"
-          args: >
-            delete -f "./deployment/deployment.yml" &&
-            apply -f "./deployment/deployment.yml" &&
-            echo "Deployed!"
-            
-          # run: |
-          #   echo "Building the images..."
-          #   docker-compose build
-          #   echo "Pushing the images..."
-          #   docker-compose push
-          #   echo "Images pushed to ECR"
+      - name: Deploy to EKS 
+        run: |
+          echo "Deploying..."
+          kubectl delete -f "./deployment/deployment.yml"
+          kubectl apply -f "./deployment/deployment.yml"
+          echo "Deployed!"
 
 
       # --- #
