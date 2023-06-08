@@ -1,33 +1,23 @@
 
-import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-// import { Partner } from '~/types/partners'
-import { BacklineClass } from '#/types'
-import { useState } from 'react'
+
 
 export default function BookingTileGrid({
   bookings,
-  hideCategories = false,
 }: {
   bookings: any[]
-  hideCategories?: boolean,
 }) {
   let router = useRouter()
 
   const Redirect = (e: any) => {
-    // e.preventDefault();
     router.push(`/booking/${e}`);
     
-    // router.back();
-    // get rooms from http://localhost:8080/api/roomman/room/{id}
-    // let data = fetch(`http://localhost:8080/api/roomman/room/${e}`)
     
   };
   return (
     <>
       {bookings.length > 0 ? bookings.map((category, key) => (
-        <div key={key} id={`booking_room_${category.roomId}`} className="space-y-8 mb-2 backline-list max-h-96 overflow-y-auto cursor-pointer">
+        <div key={key} onClick={() => Redirect(category._id)} id={`booking_room_${category.roomId}`} className="space-y-8 mb-2 backline-list max-h-96 overflow-y-auto cursor-pointer">
               <div >
            
                   <div
