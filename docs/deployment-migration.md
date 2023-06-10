@@ -116,12 +116,26 @@ I managed to push sucessfully to the docker registry and I could access them in 
 
 ![Azure Repositories](/docs/img/azureuploadedcontainers.png)
 
+*Note: In addition to the container registry setup, I had to create a kubernetes secret with the registry credentials (server, username and password) as it was private and I couldn't pull the images without authentication. In AWS ECR, the repositories were public and I pulled the images without authentication.*
+
 ### Kubernete Deployment
 
 The migration process of the kubernetes deployment was facilitated by having the deployment configurations stored in YAML files. These included files for deploying the pods and services, two for the front-end and back-end services with load balancer, and one for autoscaling configuration. Moreover, a Prometheus config was used to monitor the cluster and relay data to Grafana.
 
-The only thing I had to change was the image source in the deployment.yml file. After connecting to the new cluster, I was able to easily deploy the the pods/services using:
+I had to create the secrets for the databases, hosts and images in the new cluster. This was done with only running the kubectlsecrets.sh script in the scripts folder, which created all necessarry secrets.
+
+To run the script I opened bash terminal and ran:
+```bash
+./scripts/kubectlsecrets.sh
 ```
+These are the results:
+
+![Exported secrets to Azure Kubernetes Cluster](/docs/img/kubectlexportsecrets.png)
+
+
+After connecting to the new cluster and successfully create the cluster secrets, I was able to easily deploy the the pods/services using:
+
+```bash
 # Being in the root folder (StudioNest-API)
 
 kubectl apply -f "./deployment/deployment.yml"
@@ -129,6 +143,11 @@ kubectl apply -f "./deployment/deployment-services.yml"
 kubectl apply -f "./deployment/deployment-server.yml"
 kubectl apply -f "./deployment/deployment-client.yml"
 ```
+
+With the steps described in this document I was able to successfully migrate the deployment setup from AWS EKS to Azure Kubernetes Service.
+
+![Azure Running Pods](/docs/img/runningpodsazure.png)
+
 
 ## Challenges & Solutions
 

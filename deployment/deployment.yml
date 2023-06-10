@@ -53,7 +53,7 @@ items:
             valueFrom:
               secretKeyRef:
                 name: roomman-secret
-                key: ROOMMAN_MONGODB_CONNECTION_STRING
+                key: MONGODB_CONNECTION_STRING
           resources:
             limits:
               cpu: 500m
@@ -72,6 +72,8 @@ items:
         labels:
           app: booking
       spec:
+        imagePullSecrets:
+        - name: acr-auth
         containers:
         - name: booking
           image: "studionestapi.azurecr.io/booking:latest"
@@ -83,7 +85,7 @@ items:
             valueFrom:
               secretKeyRef:
                 name: booking-secret
-                key: BOOKING_MONGODB_CONNECTION_STRING
+                key: MONGODB_CONNECTION_STRING
           resources:
             limits:
               cpu: 500m
@@ -102,6 +104,8 @@ items:
         labels:
           app: user
       spec:
+        imagePullSecrets:
+        - name: acr-auth
         containers:
         - name: user
           image: "studionestapi.azurecr.io/user:latest"
@@ -113,7 +117,7 @@ items:
             valueFrom:
               secretKeyRef:
                 name: user-secret
-                key: USER_MONGODB_CONNECTION_STRING
+                key: MONGODB_CONNECTION_STRING
           resources:
             limits:
               cpu: 500m
@@ -132,6 +136,8 @@ items:
         labels:
           app: contentlib
       spec:
+        imagePullSecrets:
+        - name: acr-auth
         containers:
         - name: contentlib
           image: "studionestapi.azurecr.io/contentlib:latest"
@@ -143,7 +149,7 @@ items:
             valueFrom:
               secretKeyRef:
                 name: contentlib-secret
-                key: CONTENTLIB_MONGODB_CONNECTION_STRING
+                key: MONGODB_CONNECTION_STRING
           resources:
             limits:
               cpu: 500m
@@ -162,6 +168,8 @@ items:
         labels:
           app: payment
       spec:
+        imagePullSecrets:
+        - name: acr-auth
         containers:
         - name: payment
           image: "studionestapi.azurecr.io/payment:latest"
@@ -186,6 +194,8 @@ items:
         labels:
           app: auth
       spec:
+        imagePullSecrets:
+        - name: acr-auth
         containers:
         - name: auth
           image: "studionestapi.azurecr.io/auth:latest"
@@ -197,7 +207,7 @@ items:
             valueFrom:
               secretKeyRef:
                 name: auth-secret
-                key: AUTH_MONGODB_CONNECTION_STRING
+                key: MONGODB_CONNECTION_STRING
           resources:
             limits:
               cpu: 500m
@@ -216,6 +226,8 @@ items:
         labels:
           app: client
       spec:
+        imagePullSecrets:
+        - name: acr-auth
         containers:
         - name: client
           image: "studionestapi.azurecr.io/client:latest"
@@ -227,7 +239,7 @@ items:
             valueFrom:
               secretKeyRef:
                 name: client-secret
-                key: CLIENT_HOST
+                key: HOST
           resources:
             limits:
               cpu: 500m
