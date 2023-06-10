@@ -25,7 +25,7 @@ The backend of the application is developed using FastAPI and consists of seven 
 - **Booking Service**: Manages the entire booking process, from scheduling to cancellation.
 - **Gateway Service**: Serves as the entry point for the system, routing requests to the appropriate microservices.
 
-All these microservices are containerized and deployed on a Kubernetes cluster. Autoscaling policies are applied to these microservices based on the load and resource utilization.
+All these microservices are containerized and deployed on a Kubernetes cluster on Azure Kubernetes Service. Autoscaling policies are applied to these microservices based on the load and resource utilization.
 
 The frontend of the application is developed using NextJS. User interactions with the frontend trigger various operations on the backend, making it a critical component of the performance testing.
 
@@ -39,7 +39,12 @@ The goal of the performance testing is to ensure that the system can handle high
 
 I chose Apache JMeter as the primary tool for performace testing due to its flexibility, scalability, and wide range of supported protocols.
 
-My initial test plan is to create a JMeter thread group of 100 users, with a ramp-up period of 100 seconds and a loop count of 10. In each loop, users mimic typical application interactions such as logging in, making a booking, accessing the content library, and making a payment. Each interaction was recorded and parameterized using JMeter's HTTP(S) Test Script Recorder.
+My initial test plan is to:
+* create thread group of 100 users
+* a ramp-up period of 100 seconds and 
+* a loop count of 10.
+
+In each loop, users mimic typical application interactions such as logging in, making a booking, accessing the content library, and making a payment. Each interaction was recorded and parameterized using JMeter's HTTP(S) Test Script Recorder.
 
 After the initial round of tests, I will progressively increase or decrease the load, based on the observed results. For instance, if the system was able to handle 100 users with acceptable performance, I will increase the user count to a higher value and reran the tests. If the performance was not acceptable, I will decrease the user count or looked into potential system bottlenecks that could be causing performance degradation.
 
@@ -51,8 +56,9 @@ The current auto scaling configuration can be found in
 ```
 /deploymeny/autoscaler.yml
 ```
-The deployment is done on AWS EKS using AWS CLI. The docker images are stored in AWS ECR.
-For each service there is a limit of max 5 pods. In the results & analysis section, I will try different configurations based on the results with the current setup
+
+*For each service there is a limit of max 2 pods. In the results & analysis section, I will try different configurations based on the results with the current setup*
+
 
 ## Performance Metrics
 
@@ -64,26 +70,27 @@ Here are the key metrics I will take into account:
 
 2. **Memory Usage**: This indicates how much of the system's RAM is being used. Similar to CPU usage, high memory usage can highlight potential performance bottlenecks.
 
-3. **Network Throughput**: Network I/O can often be a limiting factor in distributed systems like ours. Monitoring the data being sent and received by our application can help identify potential network bottlenecks.
+3. **Pod Failure**: Network I/O can often be a limiting factor in distributed systems like ours. Monitoring the data being sent and received by our application can help identify potential network bottlenecks.
 
-4. **Pod Startup Time**: This measures how long it takes for a pod to go from being scheduled to being ready to accept requests. Slow startup times can delay the effectiveness of autoscaling.
+4. **Error Rate**: The number and type of errors returned by our application, such as HTTP 500 errors, can indicate issues with the application's stability under load.
 
-5. **Request Processing Time**: This is the time taken by our microservices to process requests. Increased processing time during high load could point to performance bottlenecks within the application.
+5. **Node Count**: Monitoring when and why the autoscaler is scaling up or down is critical to understanding its effectiveness and fine-tuning its configuration.
 
-6. **Error Rate**: The number and type of errors returned by our application, such as HTTP 500 errors, can indicate issues with the application's stability under load.
+6. **Database Metrics**: These include read/write operations, active connections, and latency. Monitoring these can provide insights into the performance of our MongoDB Cloud database under different load scenarios.
 
-7. **Autoscaling Events**: Monitoring when and why the autoscaler is scaling up or down is critical to understanding its effectiveness and fine-tuning its configuration.
+I initially used the monitoring statistics, provided by default from Azure and the prometheus setup. It provided statistics for the CPU and memory load of the nodes, as well with the current node and active pods count.
+![Azure Monitoring](/docs/img/clustermonitoringazure.png)
+However the data was not enough to monitor carefully the behaviour of the application during stress load, therefore I setup addition Grafana instance. Azure provided pre-generated dashboards, showing all kind of statisics of the cluster, nodes, pods and other azure tools.
 
-8. **Database Metrics**: These include read/write operations, active connections, and latency. Monitoring these can provide insights into the performance of our MongoDB Cloud database under different load scenarios.
+
+I can also monitor the status of the whole cluster in one structured dashboard:
+![Azure Grafana](/docs/img/grafanaazure.png)
+
 
 ## Results & Analysis
-Present the results of the tests here. This can be done in multiple ways:
+Here the results of the autoscaler are shown for each stress run.
+### First Run
 
-- Use tables to provide an at-a-glance view of the most important results.
-- Use graphs to visualize the changes in performance over time or across different configurations.
-- Provide a narrative description of the results, particularly for complex results that require more detailed explanation.
-
-Compare the performance results across different autoscaling configurations.
 
 ## Changes & Improvements
 
