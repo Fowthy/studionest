@@ -2,6 +2,8 @@
 
 This document describes the process and the results of performance testing for our Kubernetes-based application using the Kubernetes Autoscaler and Apache JMeter for stress testing.
 
+*Note: During the course of our performance testing and analysis, I exhausted my AWS credits. As a result, I decided to migrate the entire Kubernetes deployment from AWS EKS to Google Cloud's GKE (Google Kubernetes Engine). This migration had an impact on the testing process and results, which I have noted and addressed in the relevant sections below.*
+
 ## Table of Contents
 
 - [System Overview](#system-overview)
@@ -31,7 +33,9 @@ The database for the system resides in MongoDB running on MongoDB Atlas. The cho
 
 The goal of the performance testing is to ensure that the system can handle high loads, particularly during peak booking times, and that the Kubernetes autoscaler effectively manages resources during these periods.
 
+
 ## Performance Testing Approach
+*Note: During the testing process, due to running out of AWS credits, I migrated the deployment from AWS EKS to Google Cloud's GKE. I made sure to replicate the original deployment as closely as possible to maintain the validity of the tests.*
 
 I chose Apache JMeter as the primary tool for performace testing due to its flexibility, scalability, and wide range of supported protocols.
 
@@ -47,6 +51,7 @@ The current auto scaling configuration can be found in
 ```
 /deploymeny/autoscaler.yml
 ```
+The deployment is done on AWS EKS using AWS CLI. The docker images are stored in AWS ECR.
 For each service there is a limit of max 5 pods. In the results & analysis section, I will try different configurations based on the results with the current setup
 
 ## Performance Metrics
@@ -72,7 +77,6 @@ Here are the key metrics I will take into account:
 8. **Database Metrics**: These include read/write operations, active connections, and latency. Monitoring these can provide insights into the performance of our MongoDB Cloud database under different load scenarios.
 
 ## Results & Analysis
-
 Present the results of the tests here. This can be done in multiple ways:
 
 - Use tables to provide an at-a-glance view of the most important results.
