@@ -14,9 +14,11 @@ items:
         labels:
           app: api
       spec:
+        imagePullSecrets:
+        - name: acr-auth
         containers:
         - name: api
-          image: "628421111437.dkr.ecr.eu-north-1.amazonaws.com/api:latest"
+          image: "studionestapi.azurecr.io/api:latest"
           imagePullPolicy: Always
           ports:
           - containerPort: 8080
@@ -38,9 +40,11 @@ items:
         labels:
           app: roomman
       spec:
+        imagePullSecrets:
+        - name: acr-auth
         containers:
         - name: roomman
-          image: "628421111437.dkr.ecr.eu-north-1.amazonaws.com/roomman:latest"
+          image: "studionestapi.azurecr.io/roomman:latest"
           imagePullPolicy: Always
           ports:
           - containerPort: 8812
@@ -70,7 +74,7 @@ items:
       spec:
         containers:
         - name: booking
-          image: "628421111437.dkr.ecr.eu-north-1.amazonaws.com/booking:latest"
+          image: "studionestapi.azurecr.io/booking:latest"
           imagePullPolicy: Always
           ports:
           - containerPort: 8813
@@ -100,7 +104,7 @@ items:
       spec:
         containers:
         - name: user
-          image: "628421111437.dkr.ecr.eu-north-1.amazonaws.com/user:latest"
+          image: "studionestapi.azurecr.io/user:latest"
           imagePullPolicy: Always
           ports:
           - containerPort: 8815
@@ -130,7 +134,7 @@ items:
       spec:
         containers:
         - name: contentlib
-          image: "628421111437.dkr.ecr.eu-north-1.amazonaws.com/contentlib:latest"
+          image: "studionestapi.azurecr.io/contentlib:latest"
           imagePullPolicy: Always
           ports:
           - containerPort: 8821
@@ -160,7 +164,7 @@ items:
       spec:
         containers:
         - name: payment
-          image: "628421111437.dkr.ecr.eu-north-1.amazonaws.com/payment:latest"
+          image: "studionestapi.azurecr.io/payment:latest"
           imagePullPolicy: Always
           ports:
           - containerPort: 8817
@@ -184,7 +188,7 @@ items:
       spec:
         containers:
         - name: auth
-          image: "628421111437.dkr.ecr.eu-north-1.amazonaws.com/auth:latest"
+          image: "studionestapi.azurecr.io/auth:latest"
           imagePullPolicy: Always
           ports:
           - containerPort: 8491
@@ -214,7 +218,7 @@ items:
       spec:
         containers:
         - name: client
-          image: "628421111437.dkr.ecr.eu-north-1.amazonaws.com/client:latest"
+          image: "studionestapi.azurecr.io/client:latest"
           imagePullPolicy: Always
           ports:
           - containerPort: 3000

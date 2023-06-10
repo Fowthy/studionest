@@ -2,7 +2,7 @@
 
   services:
     gateway:
-      image: studionestapi.azurecr.io/api:latest
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/api:latest
       container_name: api-service
       build: ./server/src/main/gateway
       ports:
@@ -11,7 +11,7 @@
         - studionest
 
     auth:
-      image: studionestapi.azurecr.io/auth:latest
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/auth:latest
       container_name: auth-service
       build: 
         context: ./server/src/main
@@ -23,7 +23,7 @@
       networks:
         - studionest
     roomman:
-      image: studionestapi.azurecr.io/roomman:latest
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/roomman:latest
       container_name: roomman-service
       build: 
         context: ./server/src/main
@@ -36,7 +36,7 @@
         - studionest
 
     booking:
-      image: studionestapi.azurecr.io/booking:latest
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/booking:latest
       container_name: booking-service
       build: 
         context: ./server/src/main
@@ -48,7 +48,7 @@
       networks:
         - studionest
     user:
-      image: studionestapi.azurecr.io/user:latest
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/user:latest
       container_name: user-service
       build: 
         context: ./server/src/main
@@ -61,7 +61,7 @@
         - studionest
 
     payment:
-      image: studionestapi.azurecr.io/payment:latest
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/payment:latest
       container_name: payment-service
       build: 
         context: ./server/src/main
@@ -74,7 +74,7 @@
         - studionest
 
     contentlib:
-      image: studionestapi.azurecr.io/contentlib:latest
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/contentlib:latest
       container_name: contentlib-service
       build: 
         context: ./server/src/main
@@ -86,7 +86,7 @@
       networks:
         - studionest
     client:
-      image: studionestapi.azurecr.io/client:latest
+      image: 628421111437.dkr.ecr.eu-north-1.amazonaws.com/client:latest
       container_name: client-service
       restart: always
       build: "./client"

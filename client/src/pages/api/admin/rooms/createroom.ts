@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'multipart/form-data' },
-        body: formData
+        body: req.body,
       };
 
       const response = await fetch(`${process.env.SERVER_HOST}/api/roomman/room`, requestOptions); // Replace with your FastAPI server URL

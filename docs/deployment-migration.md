@@ -2,6 +2,7 @@
 
 This document outlines the process I followed to migrate the Kubernetes deployment from Amazon Web Services' Elastic Kubernetes Service (EKS) to Microsoft Azure's Azure Kubernetes Service (AKS).
 
+
 ## Table of Contents
 
 - [Migration Overview](#migration-overview)
@@ -15,6 +16,8 @@ This document outlines the process I followed to migrate the Kubernetes deployme
 ## Migration Overview
 
 Provide a brief overview of the migration process and why it was necessary (for example, due to the exhaustion of AWS credits).
+
+![AWS Suspended](/docs/img/awssuspended.png)
 
 ## AWS EKS Deployment Details
 
@@ -65,10 +68,59 @@ In the autoscaling research document found at:
 you'll find more detailed information on the configuration and scaling of nodes.
 
 ## Migration Process
+The migration process was easy as I have most of the deployment/images configuration stored in files. Below I explain the migration steps to deploy on Azure and access my application.
+### Docker Images
+To migrate the docker images it was straight forward. First, I had to create docker registry for the images in Azure Docker Registry:
 
-The migration process was facilitated by having the deployment configurations stored in YAML files. These included files for deploying the pods and services, two for the front-end and back-end services with load balancer, and one for autoscaling configuration. Moreover, a Prometheus config was used to monitor the cluster and relay data to Grafana.
+![Azure Container Registry](/docs/img/azurecontainerregistry.png)
 
-After connecting to the new cluster, I was able to easily deploy the the pods/services using:
+
+I had the docker images stored in one docker-compose file.
+
+The docker images were builded like this:
+```yml
+version: "3.8"
+
+  services:
+    gateway:
+      image: <AWS_ECR_HOST>/api:latest
+      container_name: api-service
+      build: ./server/src/main/gateway
+      ports:
+        - "8080:8080"
+      networks:
+        - studionest
+
+    auth:
+      image: <AWS_ECR_HOST>/auth:latest
+      container_name: auth-service
+      build: 
+        context: ./server/src/main
+        dockerfile: ./auth/Dockerfile
+      ports:
+        - "8491:8491"
+      env_file:
+        - ./server/src/main/auth/app/.env
+      networks:
+        - studionest
+
+    # and so on...
+```
+I had to replace the <AWS_ECR_HOST> variable with the host of the Azure Container Registry and run:
+```
+docker compose build
+docker compose push
+```
+
+I managed to push sucessfully to the docker registry and I could access them in my new deployment.
+
+![Azure Repositories](/docs/img/azureuploadedcontainers.png)
+
+### Kubernete Deployment
+
+The migration process of the kubernetes deployment was facilitated by having the deployment configurations stored in YAML files. These included files for deploying the pods and services, two for the front-end and back-end services with load balancer, and one for autoscaling configuration. Moreover, a Prometheus config was used to monitor the cluster and relay data to Grafana.
+
+The only thing I had to change was the image source in the deployment.yml file. After connecting to the new cluster, I was able to easily deploy the the pods/services using:
 ```
 # Being in the root folder (StudioNest-API)
 
