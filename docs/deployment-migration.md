@@ -31,13 +31,23 @@ The deployment consisted of eight pods:
 * Gateway
 * Client
 
+The pods deployed on AWS EKS:
+![Cluster Pods](/docs/img/awspodsonline.png)
+
+
 Associated with these pods were eight services, with the Client and Gateway services configured as LoadBalancers to allow external cluster network access.
 
-![Include the image of the pods here]
+Pods and services accessed using kubect:
+![Cluster Pods](/docs/img/awspods.png)
 
-Furthermore, the Docker images were stored in AWS ECR (Elastic Container Registry), necessitating a migration of these images to Azure. File storage, managed through AWS S3, was another critical component requiring migration.
+Furthermore, the Docker images were stored in AWS ECR (Elastic Container Registry), necessitating a migration of these images to Azure.
+![AWS ECR](/docs/img/awsecr.png)
 
-![Include image of s3]
+
+File storage, managed through AWS S3, was another critical component requiring migration.
+
+![AWS S3](/docs/img/awss3.png)
+I have to migrate the rooms and profile images to Azure.
 
 A single IAM user role was established for secure communication with the cluster, mitigating the risk of using the root user.
 
@@ -45,7 +55,8 @@ A single IAM user role was established for secure communication with the cluster
 ## Azure AKS Deployment Details
 
 In Azure AKS, the cluster was set up with a single node, configured for autoscaling up to two nodes. Each node is equipped with 4 CPUs and 16 GB of RAM.
-![Include image of the Azure cluster configuration here]
+![Azure Cluster](/docs/img/azurecluster.png)
+
 
 In the autoscaling research document found at:
 ```
