@@ -18,47 +18,62 @@ Provide a brief overview of the migration process and why it was necessary (for 
 
 ## AWS EKS Deployment Details
 
-The AWS cluster used 3 nodes of 16gb of ram and 4 CPUs. I did the mistake of letting the nodes (instances) run even when I was not working, which resulted to exhausting the credits too quickly. There were 8 pods in the cluster:
-- room manager
-- booking
-- auth
-- user
-- contentlib
-- payment
-- gateway
-- client
-There are of course 8 services consuming the pods and the client and gateway have LoadBalancer, meaning they can be accessed outside the cluster network.
-[include the image of the pods here]
+The initial AWS cluster was configured with 3 nodes, each equipped with 16 GB of RAM and 4 CPUs. In hindsight, keeping the nodes (instances) running when they were not in use led to the quick exhaustion of credits.
 
-In addition, the docker images were stored in AWS ECR (Elastic Container Registry), meaning I had to migrate the images also to Azure. Also, the images were stored in AWS S3, therefore I have to migrate the file storage system to Azure too.
-[include image of s3]
+The deployment consisted of eight pods:
 
-There was one IAM user role setup, which was used to communicate with the cluster (to not use the root user for security reasons)
+* Room Manager
+* Booking
+* Auth
+* User
+* Contentlib
+* Payment
+* Gateway
+* Client
+
+Associated with these pods were eight services, with the Client and Gateway services configured as LoadBalancers to allow external cluster network access.
+
+![Include the image of the pods here]
+
+Furthermore, the Docker images were stored in AWS ECR (Elastic Container Registry), necessitating a migration of these images to Azure. File storage, managed through AWS S3, was another critical component requiring migration.
+
+![Include image of s3]
+
+A single IAM user role was established for secure communication with the cluster, mitigating the risk of using the root user.
 
 
 ## Azure AKS Deployment Details
 
-The configuration of the cluster in Azure AKS used one node with autoscaling to up to 2 nodes. The nodes use 4 CPU and 16GB of RAM.
-[include image of the Azure cluster configuration here]
+In Azure AKS, the cluster was set up with a single node, configured for autoscaling up to two nodes. Each node is equipped with 4 CPUs and 16 GB of RAM.
+![Include image of the Azure cluster configuration here]
 
- In the autoscaling research document found at:
+In the autoscaling research document found at:
 ```
 /docs/autoscaler-research.md
 ```
-I explain more about the configuration and the scaling of nodes.
+you'll find more detailed information on the configuration and scaling of nodes.
 
 ## Migration Process
 
-The migration was quite easy as I have the deployment configuration stored in yml files in deployment folder. There is a file for deploying the pods, file for deploying the services and two for the front-end and back-end services with loadbalancer.The autoscaling configuration is also stored in a file. In addition, there was a prometheus config for monitoring the cluster and transfering it to Grafana.
+The migration process was facilitated by having the deployment configurations stored in YAML files. These included files for deploying the pods and services, two for the front-end and back-end services with load balancer, and one for autoscaling configuration. Moreover, a Prometheus config was used to monitor the cluster and relay data to Grafana.
+
+After connecting to the new cluster, I was able to easily deploy the the pods/services using:
+```
+# Being in the root folder (StudioNest-API)
+
+kubectl apply -f "./deployment/deployment.yml"
+kubectl apply -f "./deployment/deployment-services.yml"
+kubectl apply -f "./deployment/deployment-server.yml"
+kubectl apply -f "./deployment/deployment-client.yml"
+```
 
 ## Challenges & Solutions
 
-The big challenge was having everything stored in one Cloud provider. Since my account got suspended, I had to migrate the docker images, the kubernetes cluster configuration, the file storage system and the email system. If I used AWS only for the deploying of the cluster, it would be much easier to migrate it in such scenarios.
+A significant challenge faced during the migration was the interdependency on a single cloud provider, AWS. The suspension of the AWS account necessitated the migration of various components including the Docker images, Kubernetes cluster configuration, file storage system, and email system. Using AWS only for cluster deployment would have simplified the migration process in such scenarios.
 
 ## Verification & Testing
 
-In the autoscaler-research.md document, I tested the cluster and verified the deployment.
-
+Verification of the successful migration and subsequent testing of the cluster deployment was performed and is documented in detail in the autoscaler-research.md document.
 
 ---
 
