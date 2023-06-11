@@ -54,6 +54,9 @@ Snyk detected the following critical and high severity vulnerabilities:
     - **Path:** `client/src/*`
     - **Severity:** Medium
 
+The total vulnerabilities from the Snyk scan:
+![Snykissues](/docs/img/securityissues.png)
+
 ---
 
 ## ZapProxy
@@ -134,6 +137,9 @@ Here are the recommended fixes for the vulnerabilities mentioned above:
 - **Justification**: `the latest tag of the python image contains in total of 258 vulnerabilities, where for example the image python:3.12.0b1-slim contains only 54 and no critical ones. Replacing the image tag significantly reduces the chances of security leak from the image's vulnerabilities`
 - **Status**: `Fixed`
 - **Proof of Fix**:
+![Snyk Images Tag Fix](/docs/img/snykfiximages.png)
+I managed to reduce the critical issues to 0 and drastcitaly decrease the other vulnerabilities.
+
 
 ### `Hardcoded secrets for AWS S3`
 
