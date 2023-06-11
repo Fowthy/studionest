@@ -84,32 +84,27 @@ async def addBooking(booking: Booking) -> Booking | None:
         dict = booking.dict()
         result = await collection.insert_one(dict)
         created = await collection.find_one({"_id": result.inserted_id})
-        print('bb')
 
-        ses = boto3.client('ses', 
-                          aws_access_key_id='AKIAZEUGRF2G4CNXZF6G', 
-                          aws_secret_access_key='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', 
-                          region_name='eu-north-1')
 
-        ss = ses.send_email(
-        Source = "xfowth@gmail.com",
-        Destination={
-            'ToAddresses': [
-                # booking.booker.email,
-                "xfowth@gmail.com"
-            ],
-        },
-        Message={
-            'Subject': {
-                'Data': "Booking confirmation",
-            },
-            'Body': {
-                'Text': {
-                    'Data': f"Your booking has been confirmed. \n\nRoom: {booking.roomId} \nDate: {booking.dateFrom} \nDuration: {booking.duration} hours \n\nThank you for using our service! \n\nBest regards, \nRoomman"
-                },
-            }
-        }
-    )
+    #     ss = ses.send_email(
+    #     Source = "xfowth@gmail.com",
+    #     Destination={
+    #         'ToAddresses': [
+    #             # booking.booker.email,
+    #             "xfowth@gmail.com"
+    #         ],
+    #     },
+    #     Message={
+    #         'Subject': {
+    #             'Data': "Booking confirmation",
+    #         },
+    #         'Body': {
+    #             'Text': {
+    #                 'Data': f"Your booking has been confirmed. \n\nRoom: {booking.roomId} \nDate: {booking.dateFrom} \nDuration: {booking.duration} hours \n\nThank you for using our service! \n\nBest regards, \nRoomman"
+    #             },
+    #         }
+    #     }
+    # )
         
         return Booking.parse_obj(created)
     except Exception as e:

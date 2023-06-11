@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3.12.0b1-slim
 
 LABEL org.opencontainers.image.source=""
 LABEL org.opencontainers.image.description="StudioNest Booking Manager API"

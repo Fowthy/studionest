@@ -21,10 +21,8 @@ async def create_upload_file(name: str = Form(...), file: UploadFile = File(...)
     if not file:
         return {"message": "No upload file sent"}
     else:
-        storage_account_key = 'your-storage-account-secret-key'
-        storage_account_name = 'studionestfiles'
-        connection_string = 'DefaultEndpointsProtocol=https;AccountName=studionestfiles;AccountKey=u/Ud9gXMIETRDFLMwhhxgJzIu68xOpiTgIW7k26uMEZQ2VByeB0HP1OBX81QQkAdka3HPrxCz+7Y+AStDzeHOg==;EndpointSuffix=core.windows.net'
-        container_name = 'rooms'   
+        connection_string = os.getenv('AZURE_STORAGE_CONNECTION')
+        container_name = os.getenv('AZURE_STORAGE_CONTAINER') 
 
         extension = os.path.splitext(file.filename)[1] if file.filename else ''   
         new_filename = f"{name}-{str(uuid4())}{extension}"  # Append UUID4 (random string) and extension

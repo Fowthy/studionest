@@ -13,20 +13,7 @@ from botocore.exceptions import NoCredentialsError
 
 async def upload_file(name: str, file: UploadFile = File(...)) -> str:
     try:
-        s3 = boto3.client('s3', 
-                          aws_access_key_id='AKIAZEUGRF2G4CNXZF6G', 
-                          aws_secret_access_key='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', 
-                          region_name='eu-north-1')
-        
-        extension = os.path.splitext(file.filename)[1] if file.filename else ''   
-        new_filename = f"{name}-{str(uuid4())}{extension}"  # Append UUID4 (random string) and extension
-
-        s3.upload_fileobj(Fileobj=file.file, Bucket='amplify-amplify7ba61ed5c67b4-staging-234108-deployment', Key=f'{new_filename}',ExtraArgs={'ACL': 'public-read'})
-        
-        print ("Upload Successful")
-        bucket_name = 'amplify-amplify7ba61ed5c67b4-staging-234108-deployment'
-        url = f"https://{bucket_name}.s3.amazonaws.com/{new_filename}"
-        return url
+        return None
         
     except NoCredentialsError:
         print ("Upload nnoo")

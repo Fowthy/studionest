@@ -1,5 +1,4 @@
-FROM python:latest
-
+FROM python:3.12.0b1-slim
 # 
 WORKDIR .
 

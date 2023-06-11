@@ -93,11 +93,6 @@ GUEST = [Depends(isGuest)]
 
 router = APIRouter(prefix="/api/auth")
 
-ses = boto3.client('ses', 
-                          aws_access_key_id='AKIAZEUGRF2G4CNXZF6G', 
-                          aws_secret_access_key='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', 
-                          region_name='eu-north-1')
-
 # Email data model
 class EmailSchema(BaseModel):
     subject: str
@@ -107,7 +102,7 @@ class EmailSchema(BaseModel):
 
 def sign_in_with_email_and_password(email, password, return_secure_token=True):
     payload = json.dumps({"email":email, "password":password, "return_secure_token":return_secure_token})
-    FIREBASE_WEB_API_KEY = 'AIzaSyDAf98ET4naiHNKMgn1o059JB5YVk0RDQI' 
+    FIREBASE_WEB_API_KEY = os.environ.get("FIREBASE_WEB_API_KEY") 
     rest_api_url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword"
 
     r = requests.post(rest_api_url,
@@ -139,26 +134,27 @@ async def Signup(body:SignupUser):
         body_dict = body.dict()
 
         await users.insert_one(body_dict)
-        response = ses.send_email(
-            Source = "xfowth@gmail.com",
-            # Source = email.sender,
-            Destination={
-                'ToAddresses': [
-                    # email.recipient,
-                    "xfowth@gmail.com"
-                ],
-            },
-            Message={
-                'Subject': {
-                    'Data': "Successfull registration",
-                },
-                'Body': {
-                    'Text': {
-                        'Data': "You have successfully registered to the platform",
-                    },
-                }
-            }
-        )   
+
+        # response = ses.send_email(
+        #     Source = "xfowth@gmail.com",
+        #     # Source = email.sender,
+        #     Destination={
+        #         'ToAddresses': [
+        #             # email.recipient,
+        #             "xfowth@gmail.com"
+        #         ],
+        #     },
+        #     Message={
+        #         'Subject': {
+        #             'Data': "Successfull registration",
+        #         },
+        #         'Body': {
+        #             'Text': {
+        #                 'Data': "You have successfully registered to the platform",
+        #             },
+        #         }
+        #     }
+        # )   
         return JSONResponse(content={'message': f'Successfully created user {user.uid}'}, status_code=200)    
     except:
         return HTTPException(detail={'message': 'Error Creating User'}, status_code=400) 
