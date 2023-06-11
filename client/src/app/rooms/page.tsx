@@ -70,7 +70,7 @@ export default async function Page() {
   // console.log(analytics)
 
   if(loading) {
-    return <p>Loading...</p>
+    return <div className='flex justify-center'><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 dark:border-gray-50"></div></div>
   }
   return (
     <div className="space-y-8">

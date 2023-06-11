@@ -22,12 +22,27 @@ export type RoomClass = {
 function Page() {
   // const { partners: initialPartners } = props
   // const [partners, setPartners] = useState(initialPartners)
+
+  let messages = [{
+    text: 'Find an Integration',
+  },
+  {
+    text: 'Use your favorite tools with Supabase.',
+  }, 
+  {
+    text: 'Find an Integration',
+  },
+  {
+    text: 'Use your favorite tools with Supabase.',
+  }]
+
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<RoomClass[]>([])
   const router = useRouter()
   const [chatOpened, setChatOpened] = useState(false)
   const [chatValue, setChatValue] = useState('')
-
+  const [chatMessages, setChatMessages] = useState(messages)
+  const [chatLoading, setChatLoading] = useState(false)
   useEffect(() => {
     setLoading(true);
     fetch("/api/admin/rooms/rooms")
@@ -105,18 +120,7 @@ function Page() {
   //   })
   // }, [debouncedSearchTerm, router])
 
-  let messages = [{
-    message: 'Find an Integration',
-  },
-  {
-    message: 'Use your favorite tools with Supabase.',
-  }, 
-  {
-    message: 'Find an Integration',
-  },
-  {
-    message: 'Use your favorite tools with Supabase.',
-  }]
+
 
   let openChat = () => {
     console.log('open chat')
@@ -126,10 +130,37 @@ function Page() {
       setChatOpened(true)
     }
   }
-  let sendMessage = () => {
+  async function sendMessage()  {
     console.log('send message')
     let msg = chatValue;
+    let body = {
+      text: msg,
+      sender: 'user'
+    }
+    messages.push(body)
+    setChatMessages(messages)
+    setChatValue('')
+    setChatLoading(true)
+
+    await fetch('/api/ai/chatbot', {
+      method: 'POST',
+      body: JSON.stringify(body)
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      let response_body = {
+        text: data,
+        sender: 'bot'
+      }
+      messages.push(response_body)
+      setChatMessages(messages)
+      setChatValue('')
+      setChatLoading(false)
+    })
   }
+  console.log(chatMessages, 'chat ssssss')
+
 
   return (
     <>
@@ -243,13 +274,14 @@ function Page() {
             <div className='open-chat bg-gray-300 rounded-full bottom-5 right-1 absolute w-10 h-10' onClick={openChat}>
               cleck
             </div>
-            <ul className={`space-y-12 bg-gray-500 rounded-md p-4 absolute bottom-10 right-2 grid grid-cols-1 ${chatOpened ? '' : 'hidden'}`}>
-                      {messages?.map((message, i) => <div key={i} className="flex items-center px-3 py-2 text-sm transition duration-150 ease-in-out bg-gray-300 border-none rounded-md cursor-pointer focus:outline-none">
-                        <Message  message={message} />
-                        </div>)}
+            <ul className={`space-y-12 bg-gray-700 rounded-md p-4 absolute max-w-md min-w-md bottom-11 right-7 grid grid-cols-1 ${chatOpened ? '' : 'hidden'}`}>
+                      {chatMessages?.map((message, i) => 
+                        <Message key={i}  message={message} loading={chatLoading}/>
+                        )}
+                        {chatLoading && <div className='flex justify-start text-gray-100 text-sm'>Typing...</div>}
                         <div className='input-box flex justify-between'>
-                          <input type="text" value={chatValue} className='bg-gray-200 text-gray-900 rounded-md' onChange={(e: any) => setChatValue(e.value)}/>
-                          <button className='bg-gray-200 p-1 text-gray-900 rounded-md' onClick={sendMessage}>Send</button>
+                          <input type="text" value={chatValue} className='bg-gray-600 text-gray-100 rounded-md w-full' onChange={(e: any) => setChatValue(e.target.value)}/>
+                          <button className='bg-gray-400 p-3 ml-2 text-gray-50 rounded-md' onClick={sendMessage}>Send</button>
                         </div>
                     </ul>
           </div>
