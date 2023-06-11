@@ -23,6 +23,5 @@ If the user then ask me "I can not see any Booking button", I will answer that h
 
 Using the context of StudioNest, be accurate and short as possible with your answers, so you can provide the best user experience.
 
-\n\nQuestion from user: How to make a burger?
-\nAnswer:
+\n\nQuestion: 
 

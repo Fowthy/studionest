@@ -30,6 +30,10 @@ async def chatbot(input: Input):
 async def chatbot(input: Input):
     with open('./prompts.txt', 'r') as file:
         prompt = file.read()
+
+    prompt += input.text
+
+    prompt += "\nStudioNest ChatBot Answer: \n"
     
     response = openai.Completion.create(
     model="text-davinci-003",
