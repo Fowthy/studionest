@@ -6,7 +6,7 @@ from pydantic import BaseModel
 app = FastAPI()
 
 openai.organization = "org-E0lz7rQrnKV5GBiifePxqryD"
-openai.api_key = "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"
+openai.api_key = "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"
 openai.Model.list()
 
 class Input(BaseModel):

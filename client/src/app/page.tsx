@@ -19,20 +19,20 @@ export type RoomClass = {
   backline:[]
 };
 
+let messages = [{
+  text: 'Find an Integration',
+},
+{
+  text: 'Use your favorite tools with Supabase.',
+}, 
+{
+  text: 'Find an Integration',
+},
+{
+  text: 'Use your favorite tools with Supabase.',
+}]
 function Page() {
 
-  let messages = [{
-    text: 'Find an Integration',
-  },
-  {
-    text: 'Use your favorite tools with Supabase.',
-  }, 
-  {
-    text: 'Find an Integration',
-  },
-  {
-    text: 'Use your favorite tools with Supabase.',
-  }]
 
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<RoomClass[]>([])
@@ -277,16 +277,18 @@ function Page() {
             <div className='open-chat animate-pulse cursor-pointer bg-gray-300 rounded-full bottom-5 right-1 absolute w-10 h-10' onClick={openChat}>
               
             </div>
-            <ul className={`space-y-12 bg-gray-700 rounded-md p-4 absolute max-w-md min-w-md bottom-11 right-7 grid grid-cols-1 transition-all ${chatOpened ? '' : 'hidden'}`}>
+            <div className={`rounded-md p-4 dark:bg-gray-700 bg-gray-100 absolute w-96 bottom-11 right-7 grid grid-cols-1 transition-all ${chatOpened ? '' : 'hidden'}`}>
+            <ul className={`space-y-12 max-h-96 overflow-y-scroll`}>
                       {chatMessages?.map((message, i) => 
                         <Message key={i}  message={message} loading={chatLoading}/>
                         )}
                         {chatLoading && <div className='flex justify-start text-gray-100 text-sm'>Typing...</div>}
-                        <div className='input-box flex justify-between'>
+                    </ul>
+                        <div className='input-box flex justify-between mt-8'>
                           <input type="text" value={chatValue} className='bg-gray-600 text-gray-100 rounded-md w-full' onChange={(e: any) => setChatValue(e.target.value)}/>
                           <button className='bg-gray-400 p-3 ml-2 text-gray-50 rounded-md' onClick={sendMessage}>Send</button>
                         </div>
-                    </ul>
+            </div>
           </div>
         </SectionContainer>
     </>
