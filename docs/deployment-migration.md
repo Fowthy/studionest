@@ -118,6 +118,24 @@ I managed to push sucessfully to the docker registry and I could access them in 
 
 *Note: In addition to the container registry setup, I had to create a kubernetes secret with the registry credentials (server, username and password) as it was private and I couldn't pull the images without authentication. In AWS ECR, the repositories were public and I pulled the images without authentication.*
 
+### File Storage
+Since I used AWS S3 as file storage, I also had to migrate to Azure Blob Storage. I created a storage account and 2 containers:
+* user (for storing profile pictures)
+* rooms (for storing rooms and backline pictures)
+
+
+In the front-end app I had to change the allowed domains in next.config.js:
+```js
+const nextConfig = {
+  experimental: {
+    appDir: true,
+  },
+  images: {
+    domains: ['studionestfiles.blob.core.windows.net'],
+  },
+  ...
+```
+
 ### Kubernete Deployment
 
 The migration process of the kubernetes deployment was facilitated by having the deployment configurations stored in YAML files. These included files for deploying the pods and services, two for the front-end and back-end services with load balancer, and one for autoscaling configuration. Moreover, a Prometheus config was used to monitor the cluster and relay data to Grafana.
@@ -156,6 +174,10 @@ A significant challenge faced during the migration was the interdependency on a 
 ## Verification & Testing
 
 Verification of the successful migration and subsequent testing of the cluster deployment was performed and is documented in detail in the autoscaler-research.md document.
+
+Here the app is running at 51.142.158.96 and can be accessed via the browser.
+
+![Successful migration](/docs/img/appmainpage.png)
 
 ---
 

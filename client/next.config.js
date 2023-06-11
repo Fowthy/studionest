@@ -4,7 +4,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ['amplify-amplify7ba61ed5c67b4-staging-234108-deployment.s3.amazonaws.com'],
+    domains: ['studionestfiles.blob.core.windows.net'],
   },
   webpackDevMiddleware: config => {
     config.watchOptions = {

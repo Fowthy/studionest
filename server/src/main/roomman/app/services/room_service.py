@@ -7,35 +7,40 @@ from fastapi_security import logger
 from src.main.roomman.app.models import Room
 from src.main.roomman.app.mongodb import db
 from src.main.shared.pika_client import PikaClientPublish
-from fastapi import FastAPI, Form, UploadFile, File
+from fastapi import FastAPI, Form, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-import boto3
 from botocore.exceptions import NoCredentialsError
+from azure.storage.blob import BlobServiceClient
+from azure.storage.blob import ContentSettings
+
 
 pika_client = PikaClientPublish()
 
 
-async def upload_file(name: str, file: UploadFile = File(...)) -> str:
-    try:
-        s3 = boto3.client('s3', 
-                          aws_access_key_id='AKIAZEUGRF2G4CNXZF6G', 
-                          aws_secret_access_key='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', 
-                          region_name='eu-north-1')
-        
+async def create_upload_file(name: str = Form(...), file: UploadFile = File(...)):
+    if not file:
+        return {"message": "No upload file sent"}
+    else:
+        storage_account_key = 'your-storage-account-secret-key'
+        storage_account_name = 'studionestfiles'
+        connection_string = 'DefaultEndpointsProtocol=https;AccountName=studionestfiles;AccountKey=u/Ud9gXMIETRDFLMwhhxgJzIu68xOpiTgIW7k26uMEZQ2VByeB0HP1OBX81QQkAdka3HPrxCz+7Y+AStDzeHOg==;EndpointSuffix=core.windows.net'
+        container_name = 'rooms'   
+
         extension = os.path.splitext(file.filename)[1] if file.filename else ''   
         new_filename = f"{name}-{str(uuid4())}{extension}"  # Append UUID4 (random string) and extension
+        content_settings = ContentSettings(content_type='image/jpeg')  # set content type
+        blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+        blob_client = blob_service_client.get_blob_client(container=container_name, blob=new_filename)
 
-        s3.upload_fileobj(Fileobj=file.file, Bucket='amplify-amplify7ba61ed5c67b4-staging-234108-deployment', Key=f'{new_filename}',ExtraArgs={'ACL': 'public-read'})
-        
-        print ("Upload Successful")
-        bucket_name = 'amplify-amplify7ba61ed5c67b4-staging-234108-deployment'
-        url = f"https://{bucket_name}.s3.amazonaws.com/{new_filename}"
-        return url
-        
-    except NoCredentialsError:
-        print ("Upload nnoo")
-        return "No access credentials"
-
+        try:
+            contents = file.file.read()
+            file.file.seek(0)
+            blob_client.upload_blob(contents, content_settings=content_settings)
+        except Exception:
+            raise HTTPException(status_code=500, detail='Something went wrong')
+        finally:
+            file.file.close()
+            return f"https://studionestfiles.blob.core.windows.net/rooms/{new_filename}"
 
 # Creates a room in the database
 async def createRoom(roomdata: str = Form(...), image: Optional[UploadFile] = None) -> Room | None:
@@ -55,7 +60,7 @@ async def createRoom(roomdata: str = Form(...), image: Optional[UploadFile] = No
         # default image
         imageLink = "https://amplify-amplify7ba61ed5c67b4-staging-234108-deployment.s3.amazonaws.com/64771cf56a4fe492f9159f21-dc6c863d-89de-48c6-a18b-c8c01d24db5d.png"
     else:
-        imageLink = await upload_file(str(room.id),image)
+        imageLink = await create_upload_file(str(room.id),image)
 
     room.img = imageLink;
     # Convert the Room object to a dictionary and insert it into the database
