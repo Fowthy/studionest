@@ -1,0 +1,34 @@
+name: "Deploy"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    uses: ./.github/workflows/PyTests.yml
+
+  sonarqube:
+    uses: ./.github/workflows/SonarQube.yml
+    needs: pytest
+    secrets: inherit
+
+  container-registry:
+    uses: ./.github/workflows/container-registry.yml
+    needs: sonarqube
+    secrets: inherit
+
+  azure-kubernetes-service:
+    uses: ./.github/workflows/kubernetes-service.yml
+    needs: container-registry
+    secrets: inherit
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
