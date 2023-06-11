@@ -20,8 +20,6 @@ export type RoomClass = {
 };
 
 function Page() {
-  // const { partners: initialPartners } = props
-  // const [partners, setPartners] = useState(initialPartners)
 
   let messages = [{
     text: 'Find an Integration',
@@ -43,6 +41,8 @@ function Page() {
   const [chatValue, setChatValue] = useState('')
   const [chatMessages, setChatMessages] = useState(messages)
   const [chatLoading, setChatLoading] = useState(false)
+  const [search, setSearch] = useState('')
+
   useEffect(() => {
     setLoading(true);
     fetch("/api/admin/rooms/rooms")
@@ -60,8 +60,11 @@ function Page() {
   const allCategories = Array.from(
     new Set(data.map((p) => p.type))
   )
+  const filteredData = data.filter((item: RoomClass) => 
+  item.name.toLowerCase().includes(search.toLowerCase())
+);
   const partnersByCategory: { [category: string]: RoomClass[] } = {}
-  data.forEach(
+  filteredData.forEach(
     (p) =>
       (partnersByCategory[p.type] = [
         ...(partnersByCategory[p.type] ?? []),
@@ -72,10 +75,10 @@ function Page() {
     router.push(`#${category.toLowerCase()}`)
   }
 
+
   const meta_title = 'Find an Integration'
   const meta_description = `Use your favorite tools with Supabase.`
 
-  // const [search, setSearch] = useState('')
   // const [debouncedSearchTerm] = useDebounce(search, 300)
   // const [isSearching, setIsSearching] = useState(false)
   // const currentTheme = theme === 'system' ? systemTheme : theme;
@@ -181,7 +184,7 @@ function Page() {
               <div className="space-y-6">
                 {/* Search Bar */}
 
-                {/* <input
+                <input
                   // icon={<IconSearch />}
                   placeholder="Search..."
                   type="text"
@@ -189,7 +192,7 @@ function Page() {
                   value={search}
                   onChange={(e: any) => setSearch(e.target.value)}
 
-                /> */}
+                />
                 
                 <div className="hidden lg:block">
                   <div className="mb-2 text-lg text-gray-900 dark:text-gray-50 font-bold">Categories</div>
@@ -264,17 +267,17 @@ function Page() {
             <div className="lg:col-span-8 xl:col-span-9">
               {/* Partner Tiles */}
               <div className="grid space-y-10">
-                {data.length ? (
+                {filteredData.length ? (
                   <PartnerTileGrid partnersByCategory={partnersByCategory} />
                 ) : (
                   <h2 className="h2">No partners found</h2>
                 )}
               </div>
             </div>
-            <div className='open-chat bg-gray-300 rounded-full bottom-5 right-1 absolute w-10 h-10' onClick={openChat}>
-              cleck
+            <div className='open-chat animate-pulse cursor-pointer bg-gray-300 rounded-full bottom-5 right-1 absolute w-10 h-10' onClick={openChat}>
+              
             </div>
-            <ul className={`space-y-12 bg-gray-700 rounded-md p-4 absolute max-w-md min-w-md bottom-11 right-7 grid grid-cols-1 ${chatOpened ? '' : 'hidden'}`}>
+            <ul className={`space-y-12 bg-gray-700 rounded-md p-4 absolute max-w-md min-w-md bottom-11 right-7 grid grid-cols-1 transition-all ${chatOpened ? '' : 'hidden'}`}>
                       {chatMessages?.map((message, i) => 
                         <Message key={i}  message={message} loading={chatLoading}/>
                         )}
@@ -285,9 +288,7 @@ function Page() {
                         </div>
                     </ul>
           </div>
-          {/* Become a partner form */}
         </SectionContainer>
-        {/* <BecomeAPartner supabase={supabase} /> */}
     </>
   )
 }
