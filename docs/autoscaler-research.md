@@ -83,13 +83,50 @@ I initially used the monitoring statistics, provided by default from Azure and t
 However the data was not enough to monitor carefully the behaviour of the application during stress load, therefore I setup addition Grafana instance. Azure provided pre-generated dashboards, showing all kind of statisics of the cluster, nodes, pods and other azure tools.
 
 
-I can also monitor the status of the whole cluster in one structured dashboard:
-![Azure Grafana](/docs/img/grafanaazure.png)
-
-
 ## Results & Analysis
-Here the results of the autoscaler are shown for each stress run.
+This document illustrates the results of an autoscaler test run for different load scenarios. Initially, the cluster metrics in the idle state are displayed as follows:
+![Initial Metrics](/docs/img/initialmetrics.png)
+
+
 ### First Run
+The first test focused on the Room Manager microservices, specifically targeting a simple GET request to retrieve all rooms from the database. I prepared two Grafana dashboards to effectively monitor the behaviors and loads of the pods and services.
+
+The first dashboard allowed for easy monitoring of each service's CPU and memory usage, with the ability to swiftly switch between services via built-in variables:
+![Room Manager Service Metrics](/docs/img/cpurampods.png)
+
+
+The second dashboard was tailored to monitor individual pods, permitting quick transitions between them. This detailed pod monitoring is available for every pod in the cluster:
+
+![Room Manager Initial Metrics](/docs/img/initialmetricsroomman.png)
+
+Additionally, these dashboards also facilitate network and bandwidth monitoring.
+
+The JMeter configuration employed for this test run was as follows:
+
+![JMeter Configuration](/docs/img/firsttest_jmeter.png)
+
+However it put my laptop's CPU on very high load and it was almost impossible to do anything while running the test.    
+
+![JMeter Configuration](/docs/img/jmetertest.png)
+
+Even 4 minutes of stressing the application with 15000 users and 20 requests per user did not result in any problems in the kubernetes deployment.
+
+![JMeter Configuration](/docs/img/firsttest_roomman.png)
+The node's CPU only experienced a minimal spike during the test.
+
+For the next test run, the thread group configuration was adjusted to 10000 users and was left running for an extended duration of 10 minutes.
+.
+
+![JMeter Configuration](/docs/img/jmeterconfig1.png)
+
+The resulting graph made it difficult to observe the performance details. An important factor, however, was the throughput. This is a measure of the maximum number of requests the application can handle. In this test case, it was observed to be 8,403,215 requests per minute.
+![JMeter Configuration](/docs/img/jmeterresults1.png)
+
+However the test was performed on a single GET request, fetching only room data. Therefore, while these results do provide some insights, they are not comprehensive enough to conclusively evaluate the autoscaling performance or verify the application's stability under heavy load.
+
+
+### Second Run
+
 
 
 ## Changes & Improvements
