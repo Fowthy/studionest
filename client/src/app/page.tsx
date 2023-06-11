@@ -55,7 +55,7 @@ function Page() {
   
   
   
-  if(loading) return <p>Loading..</p>
+  if(loading) return <div className='flex justify-center align-middle h-screen'><div className="animate-spin self-center rounded-full h-32 w-32 border-b-2 border-gray-900 dark:border-gray-50"></div></div>
   
   const allCategories = Array.from(
     new Set(data.map((p) => p.type))

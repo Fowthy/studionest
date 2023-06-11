@@ -48,7 +48,6 @@ export default function Page({params}: any) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(cookies,'hm',data)
         if (data.detail === 'Invalid ID token') {
         } else {
           setAuthenticated(true);
@@ -92,6 +91,7 @@ export default function Page({params}: any) {
     }, [params.roomId]);
 
     console.log(quantity, 'the right place')
+
     const placeBooking = () => {
       if(authenticated) {
         setLoading(true);
@@ -161,7 +161,7 @@ export default function Page({params}: any) {
     
     
     if(loading || data == undefined ) {
-      return <p>Loading..</p>
+      return <div className='flex justify-center'><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 dark:border-gray-50"></div></div>
     }
     console.log(data,' test data tetete')
     return (
