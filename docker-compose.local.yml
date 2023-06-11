@@ -85,6 +85,16 @@
         - ./server/src/main/contentlib/app/.env
       networks:
         - studionest
+    aihelper:
+      image: studionestapi.azurecr.io/aihelper:latest
+      container_name: aihelper-service
+      build: 
+        context: ./server/src/main
+        dockerfile: ./aihelper/Dockerfile
+      ports:
+        - "8840:8840"
+      networks:
+        - studionest
     client:
       image: studionestapi.azurecr.io/client:latest
       container_name: client-service

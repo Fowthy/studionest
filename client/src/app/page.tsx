@@ -26,6 +26,7 @@ function Page() {
   const [data, setData] = useState<RoomClass[]>([])
   const router = useRouter()
   const [chatOpened, setChatOpened] = useState(false)
+  const [chatValue, setChatValue] = useState('')
 
   useEffect(() => {
     setLoading(true);
@@ -124,6 +125,10 @@ function Page() {
     } else {
       setChatOpened(true)
     }
+  }
+  let sendMessage = () => {
+    console.log('send message')
+    let msg = chatValue;
   }
 
   return (
@@ -242,6 +247,10 @@ function Page() {
                       {messages?.map((message, i) => <div key={i} className="flex items-center px-3 py-2 text-sm transition duration-150 ease-in-out bg-gray-300 border-none rounded-md cursor-pointer focus:outline-none">
                         <Message  message={message} />
                         </div>)}
+                        <div className='input-box flex justify-between'>
+                          <input type="text" value={chatValue} className='bg-gray-200 text-gray-900 rounded-md' onChange={(e: any) => setChatValue(e.value)}/>
+                          <button className='bg-gray-200 p-1 text-gray-900 rounded-md' onClick={sendMessage}>Send</button>
+                        </div>
                     </ul>
           </div>
           {/* Become a partner form */}
