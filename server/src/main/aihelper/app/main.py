@@ -9,8 +9,8 @@ import requests
 
 app = FastAPI()
 
-openai.organization = "org-E0lz7rQrnKV5GBiifePxqryD"
-openai.api_key = "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"
+openai.organization = os.environ.get('OPENAI_ORGANIZATIO')
+openai.api_key = os.environ.get('OPENAI_API_KEY')
 openai.Model.list()
 
 class Input(BaseModel):
