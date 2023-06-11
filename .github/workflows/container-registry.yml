@@ -1,4 +1,4 @@
-name: "Build Images"
+name: "Build and Push Images"
 on:
   workflow_call:
   workflow_dispatch:
@@ -11,31 +11,43 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deployment:
-    runs-on: self-hosted
+  build-and-push-images:
+    strategy:
+      matrix:
+        service:
+          # [service-name, docker-context, dockerfile-path]
+          - [gateway, server, src/main/gateway/Dockerfile]
+          - [user, server, src/main/user/Dockerfile]
+          - [booking, server, src/main/booking/Dockerfile]
+          - [contentlib, server, src/main/contentlib/Dockerfile]
+          - [payment, api, src/main/payment/Dockerfile]
+          - [roomman, api, src/main/roomman/Dockerfile]
+          - [auth, api, src/main/auth/Dockerfile]
+          - [aihelper, api, src/main/aihelper/Dockerfile]
+          - [client, client, Dockerfile]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@main
+
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
         with:
-          submodules: false
-          
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: 'Build and push images'
+        uses: azure/docker-login@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-north-1
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
 
 
-      - name: Build and push Docker images
-        run: |
-          echo "Building the images..."
-          docker-compose build
-          echo "Pushing the images..."
-          docker-compose push
-          echo "Images pushed to ECR"
+      - name: Build and Push images
+        env:
+          REGISTRY_LOGIN_SERVER: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          SERVICE_NAME: ${{ matrix.service[0] }}
+          CONTEXT: ${{ matrix.service[1] }}
+          DOCKERFILE_PATH: ${{ matrix.service[2] }}
+        run: ./scripts/buildandpushimages.sh
+      # --- #
