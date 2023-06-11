@@ -51,9 +51,9 @@ async def createRoom(roomdata: str = Form(...), image: Optional[UploadFile] = No
     room = Room.parse_obj(loads(roomdata))
 
     # Check if a room with the same name already exists
-    exists = await collection.find_one({"name": room.name})
-    if exists:
-        raise Exception("Room with that name already exists")
+    # exists = await collection.find_one({"name": room.name})
+    # if exists:
+    #     raise Exception("Room with that name already exists")
     
     imageLink = ""
     if(image is None):

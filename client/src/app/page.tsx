@@ -267,7 +267,7 @@ function Page() {
             <div className="lg:col-span-8 xl:col-span-9">
               {/* Partner Tiles */}
               <div className="grid space-y-10">
-                {filteredData.length ? (
+                {loading == false && filteredData.length ? (
                   <PartnerTileGrid partnersByCategory={partnersByCategory} />
                 ) : (
                   <h2 className="h2">No partners found</h2>
