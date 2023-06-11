@@ -94,5 +94,8 @@ class PikaClientPublish:
         print(json_str)
         print(routing_key)
         print(exchange)
-
+        if not self.connection or self.connection.is_closed:
+            self.connection = pika.BlockingConnection(
+                                pika.ConnectionParameters(host='rattlesnake.rmq.cloudamqp.com',port=5672, virtual_host='prplgkdh', credentials=self.credentials)
+                            )
         self.channel.basic_publish(exchange=exchange, routing_key=routing_key, body=json_str)

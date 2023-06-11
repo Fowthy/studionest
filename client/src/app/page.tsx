@@ -6,6 +6,7 @@ import BecomeAPartner from '#/ui/web/BecomeAPartner'
 import PartnerLinkBox from '#/ui/web/PartnerLinkBox'
 import PartnerTileGrid from '#/ui/web/PartnerTileGrid'
 import SectionContainer from '#/ui/web/SectionContainer'
+import Message from '#/ui/message'
 
 export type RoomClass = {
   _id: string;
@@ -24,6 +25,7 @@ function Page() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<RoomClass[]>([])
   const router = useRouter()
+  const [chatOpened, setChatOpened] = useState(false)
 
   useEffect(() => {
     setLoading(true);
@@ -101,6 +103,28 @@ function Page() {
   //     setIsSearching(false)
   //   })
   // }, [debouncedSearchTerm, router])
+
+  let messages = [{
+    message: 'Find an Integration',
+  },
+  {
+    message: 'Use your favorite tools with Supabase.',
+  }, 
+  {
+    message: 'Find an Integration',
+  },
+  {
+    message: 'Use your favorite tools with Supabase.',
+  }]
+
+  let openChat = () => {
+    console.log('open chat')
+    if(chatOpened) {
+      setChatOpened(false)
+    } else {
+      setChatOpened(true)
+    }
+  }
 
   return (
     <>
@@ -195,7 +219,7 @@ function Page() {
                             d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
                           />
                         </svg>
-                      }
+                      }   
                     />
                   </div>
                 </div>
@@ -211,6 +235,14 @@ function Page() {
                 )}
               </div>
             </div>
+            <div className='open-chat bg-gray-300 rounded-full bottom-5 right-1 absolute w-10 h-10' onClick={openChat}>
+              cleck
+            </div>
+            <ul className={`space-y-12 bg-gray-500 rounded-md p-4 absolute bottom-10 right-2 grid grid-cols-1 ${chatOpened ? '' : 'hidden'}`}>
+                      {messages?.map((message, i) => <div key={i} className="flex items-center px-3 py-2 text-sm transition duration-150 ease-in-out bg-gray-300 border-none rounded-md cursor-pointer focus:outline-none">
+                        <Message  message={message} />
+                        </div>)}
+                    </ul>
           </div>
           {/* Become a partner form */}
         </SectionContainer>
