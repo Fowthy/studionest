@@ -126,6 +126,11 @@ However the test was performed on a single GET request, fetching only room data.
 
 
 ### Second Run
+On the second run I have configured multiple GET requests which ran at the same time. The requests were get all rooms, backline and bookings and the setup was as in the previous run. 
+The main difference was shown in the throughput where on the peak load it dropped to 5 million (relatively low in compared to the previous run). 
+
+In addition to the GET requests I setup POST request to create multiple rooms. However I ran into multiple errors and I couldn't perform any POST requests to the API.
+![JMeter Errors](/docs/img/jmetererror.png)
 
 
 

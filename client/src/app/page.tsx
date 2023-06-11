@@ -19,18 +19,7 @@ export type RoomClass = {
   backline:[]
 };
 
-let messages = [{
-  text: 'Find an Integration',
-},
-{
-  text: 'Use your favorite tools with Supabase.',
-}, 
-{
-  text: 'Find an Integration',
-},
-{
-  text: 'Use your favorite tools with Supabase.',
-}]
+let messages = [{}]
 function Page() {
 
 
@@ -278,7 +267,7 @@ function Page() {
               
             </div>
             <div className={`rounded-md p-4 dark:bg-gray-700 bg-gray-100 absolute w-96 bottom-11 right-7 grid grid-cols-1 transition-all ${chatOpened ? '' : 'hidden'}`}>
-            <ul className={`space-y-12 max-h-96 overflow-y-scroll`}>
+            <ul className={`space-y-12 max-h-96 overflow-y-scroll h-96`}>
                       {chatMessages?.map((message, i) => 
                         <Message key={i}  message={message} loading={chatLoading}/>
                         )}
