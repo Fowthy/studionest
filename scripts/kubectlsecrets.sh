@@ -20,10 +20,15 @@ PAYMENT_MONGODB_CONNECTION_STRING=""
 
 AUTH_IMAGE="628421111437.dkr.ecr.eu-north-1.amazonaws.com/auth:latest"
 AUTH_MONGODB_CONNECTION_STRING="mongodb+srv://xfowth:finlooxbg1@users.6l9wuxv.mongodb.net/?retryWrites=true&w=majority"
+FIREBASE_WEB_API_KEY="AIzaSyDAf98ET4naiHNKMgn1o059JB5YVk0RDQI"
 
 CLIENT_IMAGE="628421111437.dkr.ecr.eu-north-1.amazonaws.com/client:latest"
 CLIENT_MONGODB_CONNECTION_STRING=""
 CLIENT_HOST="0.0.0.0"
+
+OPENAI_ORGANIZATION="org-E0lz7rQrnKV5GBiifePxqryD"
+OPENAI_API_KEY="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"
+
 echo "Variables exported."
 
 echo "Creating secrets..."
@@ -61,6 +66,7 @@ kubectl create secret generic payment-secret \
 kubectl create secret generic auth-secret \
   --from-literal=MONGODB_CONNECTION_STRING="${AUTH_MONGODB_CONNECTION_STRING}" \
   --from-literal=IMAGE="${AUTH_IMAGE}"
+  --from-literal=FIREBASE_WEB_API_KEY="${FIREBASE_WEB_API_KEY}"
 
 # Client service
 kubectl create secret generic client-secret \
@@ -68,5 +74,9 @@ kubectl create secret generic client-secret \
   --from-literal=IMAGE="${CLIENT_IMAGE}" \
   --from-literal=HOST="${CLIENT_HOST}"
 
+# OpenAI
+kubectl create secret generic openai-secret \
+  --from-literal=ORGANIZATION="${OPENAI_ORGANIZATION}" \
+  --from-literal=API_KEY="${OPENAI_API_KEY}"
 
 echo "Secrets created!"

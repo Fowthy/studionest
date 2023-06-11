@@ -208,6 +208,48 @@ items:
               secretKeyRef:
                 name: auth-secret
                 key: MONGODB_CONNECTION_STRING
+          - name: FIREBASE_WEB_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: auth-secret
+                key: FIREBASE_WEB_API_KEY
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 50m
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: aihelper
+  spec:
+    selector:
+      matchLabels:
+        app: aihelper
+    template:
+      metadata:
+        labels:
+          app: aihelper
+      spec:
+        imagePullSecrets:
+        - name: acr-auth
+        containers:
+        - name: aihelper
+          image: "studionestapi.azurecr.io/aihelper:latest"
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8491
+          env:
+          - name: OPENAI_ORGANIZATION
+            valueFrom:
+              secretKeyRef:
+                name: openai-secret
+                key: ORGANIZATION
+          - name: OPENAI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: openai-secret
+                key: API_KEY
           resources:
             limits:
               cpu: 500m

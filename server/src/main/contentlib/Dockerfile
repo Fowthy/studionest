@@ -1,4 +1,4 @@
-FROM python:3.12.0b1-slim
+FROM python:3.11-slim-bullseye
 
 LABEL org.opencontainers.image.source=""
 LABEL org.opencontainers.image.description="StudioNest Content Library API"
