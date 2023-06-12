@@ -1,4 +1,4 @@
-name: "Deploy"
+name: "Full Deploy"
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   pytest:
-    uses: ./.github/workflows/PyTests.yml
+    uses: ./.github/workflows/pytests.yml
 
   sonarqube:
     uses: ./.github/workflows/SonarQube.yml
