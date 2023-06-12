@@ -147,7 +147,6 @@ I managed to reduce the critical issues to 0 and drastcitaly decrease the other 
 
 - **Justification**: `It is crucial to not publish any sensitive data online and it is a huge mistake to have hardcoded values directly in the files.`
 - **Status**: `Fixed`
-- **Proof of Fix**:
 
 ### `Hardcoded secrets for Azure Storage Contaniner`
 
@@ -155,7 +154,6 @@ I managed to reduce the critical issues to 0 and drastcitaly decrease the other 
 
 - **Justification**: `It is crucial to not publish any sensitive data online and it is a huge mistake to have hardcoded values directly in the files.`
 - **Status**: `Fixed`
-- **Proof of Fix**:
 
 
 ### `Hardcoded secrets for Google Firebase`
@@ -164,7 +162,6 @@ I managed to reduce the critical issues to 0 and drastcitaly decrease the other 
 
 - **Justification**: `It is crucial to not publish any sensitive data online and it is a huge mistake to have hardcoded values directly in the files.`
 - **Status**: `Fixed`
-- **Proof of Fix**:
 
 ### `Hardcoded secrets for RabbitMQ`
 
@@ -173,7 +170,13 @@ I managed to reduce the critical issues to 0 and drastcitaly decrease the other 
 - **Justification**: `It is crucial to not publish any sensitive data online and it is a huge mistake to have hardcoded values directly in the files.`
 - **Status**: `Fixed`
 - **Proof of Fix**:
+Running the code analysis, there were no critical issues found and only 6 medium vulnerabilities::
+![SonarCloud Security Test](/docs/img/snyksecrets.png)
 
+
+These are the vulnerabilities from the Snyk scan after updating the python image tags and removing all hardcoded secrets/credentials:
+
+![SonarCloud Security Test](/docs/img/snykfix.png)
 ### `Console logs on production`
 
 - **Description of the fix**: `Removed all console.logs from the frontend project on production`
@@ -181,4 +184,7 @@ I managed to reduce the critical issues to 0 and drastcitaly decrease the other 
 - **Justification**: `There were a lot of console.logs, printing data from the requests with test words, which is really inappropriate for a production build.`
 - **Status**: `Fixed`
 - **Proof of Fix**:
+
+
+I managed to fix all critical issues and reduced the high and mediul vulnerabilities to significantly lower amount, compared to the first scan.
 

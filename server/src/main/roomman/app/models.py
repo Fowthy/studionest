@@ -1,4 +1,4 @@
-from typing import Tuple, List
+from typing import Optional, Tuple, List
 from bson import ObjectId
 from pydantic import BaseModel, Field
 # from mongoengine import EmbeddedDocument, StringField, ListField, EmbeddedDocumentField
@@ -35,7 +35,7 @@ class Room(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     name: str = Field(...)
     owner: str = Field(...)
-    owner_uid: str = Field(...)
+    owner_uid: Optional[str] = None
     desc: str | None = None
     location: str = Field(...)
     type: str = Field(...)

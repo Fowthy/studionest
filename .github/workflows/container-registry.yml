@@ -2,9 +2,6 @@ name: "Build and Push Images"
 on:
   workflow_call:
   workflow_dispatch:
-  # push: 
-  #   branches:
-  #     - main
 
 concurrency:
   group: cr-${{ github.workflow }}
