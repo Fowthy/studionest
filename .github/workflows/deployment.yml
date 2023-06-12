@@ -11,22 +11,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  pytest:
+  pytests:
     uses: ./.github/workflows/pytests.yml
 
-  sonarqube:
+  sonarcloud:
     uses: ./.github/workflows/SonarQube.yml
-    needs: pytest
+    needs: pytests
     secrets: inherit
 
-  container-registry:
+  build-and-push-images:
     uses: ./.github/workflows/container-registry.yml
-    needs: sonarqube
+    needs: sonarcloud
     secrets: inherit
 
   azure-kubernetes-service:
     uses: ./.github/workflows/kubernetes-service.yml
-    needs: container-registry
+    needs: build-and-push-images
     secrets: inherit
     permissions:
       actions: read
