@@ -1,4 +1,4 @@
-name: "PyTests"
+name: "pytests"
 on:
   workflow_call:
   workflow_dispatch:

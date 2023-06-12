@@ -24,7 +24,7 @@ jobs:
     needs: sonarcloud
     secrets: inherit
 
-  azure-kubernetes-service:
+  kubernetes-deploy:
     uses: ./.github/workflows/kubernetes-service.yml
     needs: build-and-push-images
     secrets: inherit
