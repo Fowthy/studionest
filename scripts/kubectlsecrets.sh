@@ -27,11 +27,22 @@ CLIENT_MONGODB_CONNECTION_STRING=""
 CLIENT_HOST="0.0.0.0"
 
 OPENAI_ORGANIZATION="org-E0lz7rQrnKV5GBiifePxqryD"
-OPENAI_API_KEY="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"
+OPENAI_API_KEY="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"
 
 echo "Variables exported."
 
+
+echo "Deleting old secrets.."
+kubectl delete secrets --all
+
+
 echo "Creating secrets..."
+
+kubectl create secret docker-registry acr-auth \
+    --docker-server=studionestapi.azurecr.io \
+    --docker-username=studionestapi \
+    --docker-password=wjqO++u7E8Os6ClffzIuCpwv75sE0oeuxh1hRzQAjQ+ACRDq0lqg
+
 # API service
 kubectl create secret generic api-secret \
   --from-literal=MONGODB_CONNECTION_STRING="${API_MONGODB_CONNECTION_STRING}" \
@@ -65,7 +76,7 @@ kubectl create secret generic payment-secret \
 # Auth service
 kubectl create secret generic auth-secret \
   --from-literal=MONGODB_CONNECTION_STRING="${AUTH_MONGODB_CONNECTION_STRING}" \
-  --from-literal=IMAGE="${AUTH_IMAGE}"
+  --from-literal=IMAGE="${AUTH_IMAGE}" \
   --from-literal=FIREBASE_WEB_API_KEY="${FIREBASE_WEB_API_KEY}"
 
 # Client service

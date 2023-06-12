@@ -8,3 +8,4 @@ motor
 asyncio
 aio_pika
 pika
+stripe

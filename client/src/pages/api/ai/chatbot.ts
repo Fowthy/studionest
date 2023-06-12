@@ -11,8 +11,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         body: req.body,
       };
 
-      console.log(req.body, ' tuk')
-
       const response = await fetch(`${process.env.SERVER_HOST}/api/aihelper/chatbot`, requestOptions); // Replace with your FastAPI server URL
       const data = await response.json();
 
@@ -23,8 +21,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(response.status).json(data);
       }
     } catch (error) {
-      console.error('Error adding studio:', error);
-      res.status(500).json({ message: 'Error adding studio' });
+      console.error('Error:', error);
+      res.status(500).json({ message: error });
     }
   } else {
     res.status(405).json({ message: 'Method not allowed' });

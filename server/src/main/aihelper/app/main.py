@@ -51,14 +51,16 @@ def find_date(text):
     # If no date was found, return None
     return None
 
-@router.post("/chatbot")
-async def chatbot(input: Input):
+@router.post("/chatbot2")
+async def chatbot2(input: Input):
     with open('./prompts.txt', 'r') as file:
         prompt = file.read()
 
     prompt += input.text
 
     prompt += "\nStudioNest ChatBot Answer: \n"
+
+    print(prompt)
     
     response = openai.Completion.create(
     model="text-davinci-003",
@@ -131,6 +133,29 @@ async def chatbot(input: Input):
             return "Sure. I successfuly created a booking for you on " + datetime.fromisoformat(date_match.group(0)[:-1]).strftime("%A, %B %d, %Y at %I:%M %p") + " for " + duration + " hours";
         else:
             print("Failed to create a booking.")
+    return response.choices[0].text
+
+
+
+@router.post("/chatbot")
+async def chatbot(input: Input):
+    with open('./prompts.txt', 'r') as file:
+        prompt = file.read()
+
+    prompt += input.text
+
+    prompt += "\nStudioNest ChatBot Answer: \n"
+    
+    response = openai.Completion.create(
+    model="text-davinci-003",
+    max_tokens=200,
+    top_p=1,
+    frequency_penalty=0.0,
+    presence_penalty=0.0,
+    prompt=prompt,
+
+    )
+    print(response.choices[0])
     return response.choices[0].text
 
 

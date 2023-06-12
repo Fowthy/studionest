@@ -238,7 +238,7 @@ items:
           image: "studionestapi.azurecr.io/aihelper:latest"
           imagePullPolicy: Always
           ports:
-          - containerPort: 8491
+          - containerPort: 8840
           env:
           - name: OPENAI_ORGANIZATION
             valueFrom:
