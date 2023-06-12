@@ -29,6 +29,10 @@ CLIENT_HOST="0.0.0.0"
 OPENAI_ORGANIZATION="org-E0lz7rQrnKV5GBiifePxqryD"
 OPENAI_API_KEY="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"
 
+DOCKER_SERVER="studionestapi.azurecr.io"
+DOCKER_USERNAME="studionestapi"
+DOCKER_PASSWORD="wjqO++u7E8Os6ClffzIuCpwv75sE0oeuxh1hRzQAjQ+ACRDq0lqg"
+
 echo "Variables exported."
 
 
@@ -39,9 +43,9 @@ kubectl delete secrets --all
 echo "Creating secrets..."
 
 kubectl create secret docker-registry acr-auth \
-    --docker-server=studionestapi.azurecr.io \
-    --docker-username=studionestapi \
-    --docker-password=wjqO++u7E8Os6ClffzIuCpwv75sE0oeuxh1hRzQAjQ+ACRDq0lqg
+    --docker-server="${DOCKER_SERVER}" \
+    --docker-username="${DOCKER_USERNAME}" \
+    --docker-password="${DOCKER_PASSWORD}"
 
 # API service
 kubectl create secret generic api-secret \
