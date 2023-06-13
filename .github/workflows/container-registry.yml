@@ -17,10 +17,10 @@ jobs:
           - [user, server, src/main/user/Dockerfile]
           - [booking, server, src/main/booking/Dockerfile]
           - [contentlib, server, src/main/contentlib/Dockerfile]
-          - [payment, api, src/main/payment/Dockerfile]
-          - [roomman, api, src/main/roomman/Dockerfile]
-          - [auth, api, src/main/auth/Dockerfile]
-          - [aihelper, api, src/main/aihelper/Dockerfile]
+          - [payment, server, src/main/payment/Dockerfile]
+          - [roomman, server, src/main/roomman/Dockerfile]
+          - [auth, server, src/main/auth/Dockerfile]
+          - [aihelper, server, src/main/aihelper/Dockerfile]
           - [client, client, Dockerfile]
     runs-on: ubuntu-latest
     steps:
