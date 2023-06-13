@@ -7,16 +7,16 @@ LABEL org.opencontainers.image.licenses="GPL-3.0"
 WORKDIR /app
 
 # Copy the requirements file
-COPY ./user/requirements.txt /app
+COPY ./src/main/user/requirements.txt /app
 
 # Install dependencies
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
 # Copy the shared folder
-COPY ./shared /app/src/main/shared
+COPY ./src/main/shared /app/src/main/shared
 
 # Copy the service files to /app.src.user
-COPY ./user/ /app/src/main/user/
+COPY ./src/main/user/ /app/src/main/user/
 
 EXPOSE 8815
 

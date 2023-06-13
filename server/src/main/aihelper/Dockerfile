@@ -7,17 +7,17 @@ LABEL org.opencontainers.image.licenses="GPL-3.0"
 WORKDIR /app
 
 # Copy the requirements file
-COPY ./aihelper/requirements.txt /app
-COPY ./aihelper/app/prompts.txt /app
+COPY ./src/main/aihelper/requirements.txt /app
+COPY ./src/main/aihelper/app/prompts.txt /app
 
 # Install dependencies
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
 # Copy the shared folder
-COPY ./shared /app/src/main/shared
+COPY ./src/main/shared /app/src/main/shared
 
 # Copy the service files to /app.src.aihelper
-COPY ./aihelper /app/src/main/aihelper/
+COPY ./src/main/aihelper /app/src/main/aihelper/
 
 EXPOSE 8840
 

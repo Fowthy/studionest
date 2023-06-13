@@ -7,16 +7,16 @@ LABEL org.opencontainers.image.licenses="GPL-3.0"
 WORKDIR /app
 
 # Copy the requirements file
-COPY ./booking/requirements.txt /app
+COPY ./src/main/booking/requirements.txt /app
 
 # Install dependencies
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
 # Copy the shared folder
-COPY ./shared /app/src/main/shared
+COPY ./src/main/shared /app/src/main/shared
 
 # Copy the service files to /app.src.roomman
-COPY ./booking /app/src/main/booking/
+COPY ./src/main/booking /app/src/main/booking/
 
 EXPOSE 8813
 
