@@ -13,9 +13,8 @@ concurrency:
 jobs:
 
   pytests:
-    uses: ./.github/workflows/pytests.yml
-    secrets: inherit
-    
+    uses: ./.github/workflows/PyTest.yml
+
   sonarcloud:
     uses: ./.github/workflows/SonarQube.yml
     needs: pytests

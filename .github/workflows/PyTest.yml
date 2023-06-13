@@ -1,4 +1,4 @@
-name: "pytests"
+name: "Pytests"
 on:
   workflow_call:
   workflow_dispatch:
@@ -8,13 +8,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  pytests:
+  pytest:
     runs-on: self-hosted
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          submodules: false
 
       - name: Set up Python
         uses: actions/setup-python@v4
