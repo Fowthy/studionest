@@ -7,16 +7,16 @@ LABEL org.opencontainers.image.licenses="GPL-3.0"
 WORKDIR /app
 
 # Copy the requirements file
-COPY ./contentlib/requirements.txt /app
+COPY ./src/main/contentlib/requirements.txt /app
 
 # Install dependencies
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
 # Copy the shared folder
-COPY ./shared /app/src/main/shared
+COPY ./src/main/shared /app/src/main/shared
 
 # Copy the service files to /app.src.roomman
-COPY ./contentlib/ /app/src/main/contentlib/
+COPY ./src/main/contentlib/ /app/src/main/contentlib/
 
 EXPOSE 8821
 
