@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@stripe/stripe-js": "^1.54.0",
-    "axios": "^1.4.0",
-    "swr": "^2.1.5"
-  }
-}
