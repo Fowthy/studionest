@@ -7,11 +7,12 @@ This is a web application for booking rehearsal rooms and studios. It enables us
 <hr/>
 <div align="center">
 
+[![Full Deploy](https://github.com/Fowthy/StudioNest-API/actions/workflows/deployment.yml/badge.svg)](https://github.com/Fowthy/StudioNest-API/actions/workflows/deployment.yml)
 [![SonarCloud](https://github.com/Fowthy/StudioNest-API/actions/workflows/SonarQube.yml/badge.svg)](https://github.com/Fowthy/StudioNest-API/actions/workflows/SonarQube.yml)
-[![PyTests](https://github.com/Fowthy/StudioNest-API/actions/workflows/PyTests.yml/badge.svg)](https://github.com/Fowthy/StudioNest-API/actions/workflows/PyTests.yml)
-[![Deploy](https://github.com/Fowthy/StudioNest-API/actions/workflows/deploy.yml/badge.svg)](https://github.com/Fowthy/StudioNest-API/actions/workflows/deploy.yml)
-[![Build Images](https://github.com/Fowthy/StudioNest-API/actions/workflows/Build.yml/badge.svg)](https://github.com/Fowthy/StudioNest-API/actions/workflows/Build.yml)
-
+[![Pytests](https://github.com/Fowthy/StudioNest-API/actions/workflows/PyTest.yml/badge.svg)](https://github.com/Fowthy/StudioNest-API/actions/workflows/PyTest.yml)
+[![Kuberneted Deploy](https://github.com/Fowthy/StudioNest-API/actions/workflows/kubernetes-service.yml/badge.svg)](https://github.com/Fowthy/StudioNest-API/actions/workflows/kubernetes-service.yml)
+[![Build and Push Images](https://github.com/Fowthy/StudioNest-API/actions/workflows/container-registry.yml/badge.svg)](https://github.com/Fowthy/StudioNest-API/actions/workflows/container-registry.yml)
+  
 </div>
 
 ## Development
