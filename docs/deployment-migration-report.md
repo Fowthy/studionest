@@ -166,7 +166,6 @@ With the steps described in this document I was able to successfully migrate the
 
 ![Azure Running Pods](/docs/img/runningpodsazure.png)
 
-
 ## Challenges & Solutions
 
 A significant challenge faced during the migration was the interdependency on a single cloud provider, AWS. The suspension of the AWS account necessitated the migration of various components including the Docker images, Kubernetes cluster configuration, file storage system, and email system. Using AWS only for cluster deployment would have simplified the migration process in such scenarios.

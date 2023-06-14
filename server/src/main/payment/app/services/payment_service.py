@@ -6,16 +6,16 @@ from ..mongodb import db
 import stripe
 
 
-stripe.api_key = "sk_test_..."
+# stripe.api_key = "sk_test_..."
 
-# list customers
-customers = stripe.Customer.list()
+# # list customers
+# customers = stripe.Customer.list()
 
-# print the first customer's email
-print(customers.data[0].email)
+# # print the first customer's email
+# print(customers.data[0].email)
 
-# retrieve specific Customer
-customer = stripe.Customer.retrieve("cus_123456789")
+# # retrieve specific Customer
+# customer = stripe.Customer.retrieve("cus_123456789")
 
-# print that customer's email
-print(customer.email)
+# # print that customer's email
+# print(customer.email)
