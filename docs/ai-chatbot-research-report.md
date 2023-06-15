@@ -473,8 +473,7 @@ If the network\'s output differs from the desired output, an error is
 calculated and propagated backwards through the network to modify the
 synaptic weights.
 
-![](./gc2jjb4k.png){width="6.270833333333333in"
-height="5.364583333333333in"}
+![](./img/ai-chatbot/img/ai-chatbot/gc2jjb4k.png)
 
 Source:
 [[https://www.investopedia.com/terms/n/neuralnetwork.asp]{.underline}](https://www.investopedia.com/terms/n/neuralnetwork.asp)
@@ -543,7 +542,7 @@ generating meaningful responses based on its training data. Its training
 is an extensive process involving a set of foundational principles and
 immersion in a multitude of scenarios and vast amounts of data, all
 aimed at facilitating the development of its algorithms.
-\[[[14\]]{.underline}](https://www.emerald.com/insight/content/doi/10.1108/LHTN-01-2023-0009/full/html%20https://zapier.com/blog/how-does-chatgpt-work/)
+[\[14\]](https://www.emerald.com/insight/content/doi/10.1108/LHTN-01-2023-0009/full/html%20https://zapier.com/blog/how-does-chatgpt-work/)
 
 Overview of GPT-3 Training Set
 
@@ -569,7 +568,7 @@ relationships in the text data and create
 human-like responses by predicting the logical follow-up text in a given
 context.
 
-ChatGPT Model Training
+### ChatGPT Model Training
 
 However, it\'s worth noting that ChatGPT operates beyond just predicting
 the next word or sentence. Instead, it crafts comprehensive responses
@@ -584,7 +583,7 @@ which helped the AI learn to generate the best response.
 The neural network of GPT-3, an earlier version of ChatGPT, possesses
 **175** **billion** **parameters**, variables that allow the model to
 take your prompt and generate a response based on the weighted
-parameters.[\[[14](https://towardsdatascience.com/how-chatgpt-works-the-models-behind-the-bot-1ce5fca96286)\]]{.underline}
+parameters.[\[14](https://towardsdatascience.com/how-chatgpt-works-the-models-behind-the-bot-1ce5fca96286)\]
 The exact number of parameters in GPT-4 is yet to be confirmed, but
 it\'s anticipated to be higher than GPT-3 and less than a speculated
 **100** **trillion**. However, it\'s essential to realize that having
@@ -592,9 +591,7 @@ more parameters doesn\'t inherently result in better performance.
 Improvements in GPT-4\'s capabilities are likely due to a combination of
 an increase in parameters and enhancements in the training process.
 
-![](./gnn4dbs4.png){width="5.427083333333333in"
-height="3.1770833333333335in"}![](./mswneaxo.png){width="2.9583333333333335in"
-height="2.625in"}
+![](./img/ai-chatbot/gnn4dbs4.png)![](./img/ai-chatbot/mswneaxo.png)
 
 5\. Integration of GPT-3 API in a Python-based web application
 
@@ -613,8 +610,7 @@ An API chat example can be illustrated as follows:
 Source of the example:
 [[https://platform.openai.com/examples]{.underline}](https://platform.openai.com/examples)
 
-![](./t5aekn1z.png){width="6.270833333333333in"
-height="4.46875in"}
+![](./img/ai-chatbot/t5aekn1z.png)
 
 The API call contains the following components:
 
@@ -638,8 +634,7 @@ readability and presents a challenge in providing context to the AI.
 Consequently, to ease readability and ease of editing, prompts were
 segregated and stored in a separate text file.
 
-![](./gbmqlvfo.png){width="6.270833333333333in"
-height="2.1354166666666665in"}
+![](./img/ai-chatbot/gbmqlvfo.png)
 
 The prompt is the most important part, as it contains the message which
 is sent to the api. In the examples, it is stored in one big line of
@@ -677,8 +672,7 @@ things:
 > domain, precluding the chatbot from responding to questions falling
 > outside the stipulated boundary.
 
-![](./hb4vji25.png){width="6.270833333333333in"
-height="1.9166666666666667in"}
+![](./img/ai-chatbot/hb4vji25.png)
 
 To ensure the best quality possible provided by the ChatGPT API, I'm
 performing the steps to create the Chatbot API structure. The updated
@@ -739,8 +733,7 @@ the use cases, so the chatbot can answer any question in the given
 context. The API will return the answer of the hard-coded question in
 the prompt file.
 
-![](./ik2uosem.png){width="6.270833333333333in"
-height="4.59375in"}
+![](./img/ai-chatbot/ik2uosem.png)
 
 After sending a request with the updated prompt, I got detailed step by
 step information on how to book a room on the website. It mentions the
@@ -770,8 +763,7 @@ after that. In addition, the limit of the token was reached and the
 sentence is not complete. In terms of scalability and cost it is also
 very important to reduce the message tokens as much as possible.
 
-![](./ig2cjy0l.png){width="6.270833333333333in"
-height="2.59375in"}
+![](./img/ai-chatbot/ig2cjy0l.png)
 
 So in this case instead of the conversation be:
 
@@ -827,9 +819,9 @@ the response.
 *as* *possible* *with* *your* *answers,* *so* *you* *can* *provide*
 *the* *best* *user* *experience."*
 
-![](./bwf1ud0j.png){width="6.270833333333333in"
-height="4.96875in"}![](./fifxtxgs.png){width="5.645833333333333in"
-height="2.5729166666666665in"}
+![](./img/ai-chatbot/bwf1ud0j.png)
+
+![](./img/ai-chatbot/fifxtxgs.png)
 
 The response was more accurate to the question, saying information on
 only how to book a room with the different options. In addition, I
@@ -844,9 +836,9 @@ the StudioNest context.
 
 *Source* *from* *Postman*
 
-![](./0ze20wjz.png){width="6.270833333333333in"
-height="1.2083333333333333in"}![](./dzfkmz40.png){width="2.5833333333333335in"
-height="5.5625in"}
+![](./img/ai-chatbot/0ze20wjz.png)
+
+![](./img/ai-chatbot/dzfkmz40.png)
 
 Connecting the Front-End
 
@@ -864,8 +856,7 @@ stored in the local array with sender: user. The API request (the
 message) is pushed to the array with sender:bot. The design was quickly
 done using tailwind.
 
-![](./g534vg0t.png){width="4.28125in"
-height="4.739583333333333in"}
+![](./img/ai-chatbot/g534vg0t.png)
 
 Implementing message load from request
 
@@ -878,9 +869,9 @@ must provide information about the website and nothing else. After
 implementing correctly the design and the updating of states on the
 front-end, it was successfully connected with the chat box.
 
-![](./egoxsacw.png){width="5.71875in"
-height="4.302083333333333in"}![](./cdha2kpi.png){width="5.6875in"
-height="4.15625in"}
+![](./img/ai-chatbot/egoxsacw.png)
+
+![](./img/ai-chatbot/cdha2kpi.png)
 
 The final result of the implementation looks like this:
 
@@ -890,9 +881,9 @@ chatbot and then I am asking how to make a booking.
 The response takes a maximum of 5 seconds and with multiple tests
 performed it did what was told to do.
 
-![](./f4rkd3ir.png){width="6.270833333333333in"
-height="1.8645833333333333in"}![](./ubofnnz0.png){width="6.270833333333333in"
-height="3.0104166666666665in"}
+![](./img/ai-chatbot/f4rkd3ir.png)
+
+![](./img/ai-chatbot/ubofnnz0.png)
 
 Performing tasks on the website
 
@@ -911,15 +902,15 @@ later in performing other requests. This is how it looks in the code:
 The request responded with success and it managed to create the booking.
 This is tested in Postman.
 
-![](./n1vwwjwe.png){width="6.270833333333333in"
-height="0.46875in"}Checking the database, I saw that the booking was
+![](./img/ai-chatbot/n1vwwjwe.png)
+
+Checking the database, I saw that the booking was
 indeed created with the correct date and duration. The only problem is
 the format of time, as it is very difficult to write it in the exact
 format. I fixed the input to be more flexible and the output to be more
 readable:
 
-![](./sxja3zqn.png){width="6.270833333333333in"
-height="6.28125in"}
+![](./img/ai-chatbot/sxja3zqn.png)
 
 Testing it from the client also works and results in successful booking
 of an available room.
