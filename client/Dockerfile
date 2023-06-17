@@ -8,8 +8,8 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install --production
-RUN npm install tailwindcss@latest postcss@latest autoprefixer@latest
+RUN npm install --production --ignore-scripts
+
 
 # Copy source code
 COPY . .

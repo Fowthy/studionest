@@ -87,10 +87,7 @@ ZapProxy detected the following critical and high severity vulnerabilities:
 ## SonarQube
 
 SonarQube detected the following critical and high severity vulnerabilities:
-
-![SonarCloud Security Test](/docs/img/sonarqubesecurity.png)
-
-
+![SonarCloud Security Test](/docs/img/sonarcloudfailing.png)
 
 ### High Severity Vulnerabilities
 
@@ -113,7 +110,10 @@ SonarQube detected the following critical and high severity vulnerabilities:
     - **Description:** `password and credentials are stored directly in the files and pushed to public repo`
     - **File:** `server/src/main/shared/app/pika_client.py`
     - **Severity:** High
-
+5. **Vulnerability:** `Google API key exposed`
+    - **Description:** `Google API keys are used to authenticate applications that consume Google Cloud APIs. They are especially useful for accessing public data anonymously (like Google Maps), and are used to associate API requests with your project for quota and billing.`
+    - **File:** `client/src/app/booking`
+    - **Severity:** High
 ---
 ### Medium Severity Vulnerabilities
 1. **Vulnerability:** `Copying recursively might inadvertently add sensitive data to the container. Make sure it is safe here.`

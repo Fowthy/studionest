@@ -38,7 +38,7 @@ async def create_upload_file(name: str = Form(...), file: UploadFile = File(...)
             raise HTTPException(status_code=500, detail='Something went wrong')
         finally:
             file.file.close()
-            return f"https://studionestfiles.blob.core.windows.net/rooms/{new_filename}"
+        return f"https://studionestfiles.blob.core.windows.net/rooms/{new_filename}"
 
 # Creates a room in the database
 async def createRoom(roomdata: str = Form(...), image: Optional[UploadFile] = None) -> Room | None:
