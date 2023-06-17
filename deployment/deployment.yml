@@ -56,6 +56,16 @@ items:
               secretKeyRef:
                 name: roomman-secret
                 key: MONGODB_CONNECTION_STRING
+          - name: AZURE_STORAGE_CONTAINER
+            valueFrom:
+              secretKeyRef:
+                name: roomman-secret
+                key: AZURE_STORAGE_CONTAINER
+          - name: AZURE_STORAGE_CONNECTION
+            valueFrom:
+              secretKeyRef:
+                name: roomman-secret
+                key: AZURE_STORAGE_CONNECTION
           resources:
             requests:
               cpu: 50m  # 50 (0.05 CPU cores)
