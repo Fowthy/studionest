@@ -195,7 +195,7 @@ After fixing some security issues and vulnerabilities from SonarCloud I got A (v
 The Quality Gate is still failing, as there is no test coverage detected. However, the main focus was fixing the security issues and leaks amd make sure that there as less vulnerabilities as possible on production.
 
 
-![](/docs/img/sonarcloudfixes.png)
+![SonarCloud Fixes](/docs/img/sonarcloudfixes.png)
 
 
 Created on 13th June, 2023.

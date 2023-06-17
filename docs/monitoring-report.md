@@ -46,7 +46,7 @@ And the storage space of the container registry, including many more metrics, ca
 
 To monitor the MongoDB database, I used MongoDB Atlas's build-in monitoring dashboard.
 
-![](/docs/img/mongodbbb.png)
+![MongoDB Monitoring](/docs/img/mongodbbb.png)
 During the auto scaling or the stress testing, I did not experience any problems or bottlenecks with the database, therefore I did not use the monitoring dashboard.
 
 
@@ -55,7 +55,7 @@ During the auto scaling or the stress testing, I did not experience any problems
 ## RabbitMQ on CloudAMPQ Monitoring
 
 For monitoring RabbitMQ, I used the build-in dashboard on CloudAMPQ. I can monitor the In and Out messages, their traffic and how many messages are sent/received per second.
-![](/docs/img/rabbitmqevidence.png)
+![RabbitMQ Workload](/docs/img/rabbitmqevidence.png)
 
 However, I used the dashboard for testing purposes only, making sure that the connection between microservices works as expected (using correct exchanges and routing keys).
 
