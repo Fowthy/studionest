@@ -61,29 +61,20 @@ The total vulnerabilities from the Snyk scan:
 
 ## ZapProxy
 
+
 ZapProxy detected the following critical and high severity vulnerabilities:
+![Snykissues](/docs/img/zapproxyscan.png)
 
 ### Critical Vulnerabilities
 
-1. **Vulnerability:** `<Vulnerability Name>`
-    - **Description:** `<Vulnerability Description>`
-    - **URL:** `<Vulnerability URL>`
+1. **Vulnerability:** `Misconfigured Cloud Metadata in nginx controller`
+    - **Description:** `A cloud metadata may be returned on the response from the gateway controller`
     - **Severity:** Critical
 
-2. **Vulnerability:** `<Another Vulnerability Name>`
-    - **Description:** `<Vulnerability Description>`
-    - **URL:** `<Vulnerability URL>`
-    - **Severity:** Critical
-
-### High Severity Vulnerabilities
-
-1. **Vulnerability:** `<Vulnerability Name>`
-    - **Description:** `<Vulnerability Description>`
-    - **URL:** `<Vulnerability URL>`
-    - **Severity:** High
-
+2. **Vulnerability:** `Content Security Policy (CSP) Header Not Set`
+    - **Description:** `Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.`
+    - **Severity:** Medium
 ---
-
 ## SonarQube
 
 SonarQube detected the following critical and high severity vulnerabilities:
@@ -184,6 +175,15 @@ These are the vulnerabilities from the Snyk scan after updating the python image
 - **Justification**: `There were a lot of console.logs, printing data from the requests with test words, which is really inappropriate for a production build.`
 - **Status**: `Fixed`
 
+### `Content Security Policy Header`
+
+- **Description of the fix**: `The responses are configured to have the Content-Security-Policy header.`
+- **Status**: `To Do`
+
+![ZapProxy Fix](/docs/img/zapproxyfix.png)
+
+
+
 
 I managed to fix all critical issues and reduced the high and mediul vulnerabilities to significantly lower amount, compared to the first scan.
 <hr/>
@@ -193,3 +193,9 @@ After fixing some security issues and vulnerabilities from SonarCloud I got A (v
 ![SonarCloud Security Test](/docs/img/sonarcloudfixes.png)
 
 The Quality Gate is still failing, as there is no test coverage detected. However, the main focus was fixing the security issues and leaks amd make sure that there as less vulnerabilities as possible on production.
+
+
+![](/docs/img/sonarcloudfixes.png)
+
+
+Created on 13th June, 2023.
