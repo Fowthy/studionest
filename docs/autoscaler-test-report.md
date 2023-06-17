@@ -57,7 +57,7 @@ The current auto scaling configuration can be found in
 /deploymeny/autoscaler.yml
 ```
 
-*For each service there is a limit of max 2 pods. In the results & analysis section, I will try different configurations based on the results with the current setup*
+*For each service there is a limit of max 2 pods. In the results & analysis section, I will try different configurations based on the results with the current setup (up to 5 pods)*
 
 
 ## Performance Metrics
@@ -132,12 +132,187 @@ The main difference was shown in the throughput where on the peak load it droppe
 In addition to the GET requests I setup POST request to create multiple rooms. However I ran into multiple errors and I couldn't perform any POST requests to the API.
 ![JMeter Errors](/docs/img/jmetererror.png)
 
+I changed the configuration of the request (using form-data, instead of json body) and added HTTP header manager to the request, fixing the issue above.
+
+#### Booking a room test
+Testing the booking functionality is the most important part of the application, as its the main idea of the app.
+
+As my laptop couldn't handle high load of users in JMeter, I started with thread group of 100 users, and then increased to 250.
+
+The request data for making a booking looks like this:
+```json
+{
+    "roomId": "648554485ecc04d047d483b2",
+    "duration": "6",
+    "totalPrice": 36,
+    "dateFrom": "2023-07-30T09:30:00Z",
+    "booker": {
+        "email": "pepepe@gmail.com",
+        "name": "pepepe",
+        "uid": "Sbk5C3qxu5Pz1HtOpecVwEoWtzv2"
+    },
+    "backline": [
+        {
+            "quantity": 2,
+            "name": "cabinettt",
+            "price": 8.6
+        },
+        {
+            "quantity": 1,
+            "name": "cabinet da da",
+            "price": 8.6
+        }
+    ]
+}
+
+```
+The Jmeter configuration loads 10 users per seconds and each user sends 10 requests. The number of sample requests for this test is 2437.
+
+![](/docs/img/jmeterbooking.png)
+The results from the test were promising, as the maximum time of request response is around 600ms, where the average remains as low as ~200ms per request.
+
+The maximum throughput (maximum requests per minute) are recorded to be 19,032. 
+
+In addition to the performance metrics I validated the responses data too. I added result tree to the http request and and I got data for each request sent.
+![](/docs/img/jmeterbookingsucc.png)
+As shown in the image, all requests are passing successfuly and there are no errors/fails. Also, the data of the booking is correct and it appears in the database in correct format.
+
+In addition to the POST requests, I tested all GET requests on the backend to see their status and performance, when called at the same time.
+
+The requests get and send data from the database - in this case:
+- get all rooms (40 rooms in db)
+- get all bookings ( 154 bookings)
+- get all backline ( 20 backlines)
+- get user data
+
+With the same jmeter configuration, the requests performed well with average ~500ms response time and max responses of more than 2 million per minute. Again, very request is sucessfully passing and the response data is correct.
+![](/docs/img/jmeter2.png)
+
+However with such small thread group, I can not simulate the stress of the appication like in the real world.
+
+![](/docs/img/jmeter2.1.png)
+
+The results so far seems promising, however they ensure that the application will work as expected when there 250 users, but it is uncertain what the behaviour of the app will be when more users are using it. Saying that, in order to fully test the application, keeping the non functional requirements in mind, I have to look for other solutions to run the stress test. 
+
+### Third Run
+
+I looked into online solutions, that can perform stress test on web applications. One free tool is Loadium. Sadly, for the free subscription, it allows only thread group of max 50 users. I performed the same create booking test:
+
+![](/docs/img/loadiumresults.png)
+
+The results were almost the same as those from jMeter. The peak response time was 800ms and the average is 200ms. The test ran for 6 minutes.
+
+Checking the booking service on the kubernetes cluster, during the stress test there was a peak of the CPU usage of ~40%.
+![](/docs/img/bookingstress.png)
+
+This seems concering, as the previous tests from jMeter increased the CPU usage of the cluster by 3-4%, where more users were used. Based on this results, I can not make a proper conclusion is the kubernetes cluster handling high amount of load successfully or not.
+
+With the current tests so far, the kubernetes cluster performed excelent, there were no stop time, no failing requests or no timeout limits.
 
 
-## Changes & Improvements
+### Forth Run
 
-Discuss any changes made to the system or the autoscaler configuration based on the results, and how these changes improved performance.
+I did a forth run to conclude the autoscaling of the kubernetes cluster and validate its performance. I used jMeter with 1000 users, each sending 10 requests.
+
+![](/docs/img/threadgroup.png)
+
+In the deployment file, I have updated the resources for each pod from:
+![](/docs/img/cpulimitdeployment.png)
+to using minimum 0.2 CPU cores and 512 mb of memory for each pod:
+
+![](/docs/img/podsresources.png)
+
+After running the new deployment, after 30 seconds and around 250 requests, 40% of the requests started to fail and after minute and a half almost all of them were failing. Checking the Grafana, I saw that the pods did not scale successfully. In addition, the load time of the pods take too long with the new resources. 
+![](/docs/img/autoscalernotworking.png)
+As seen in the image, 3 pods of the same service were created but only one took all the request. This is the reason why the request start to fail, as the service hit its limits.
+
+
+I lowered the resources for each pod to using only 0.05 CPU cores and 256mb of memory as a minimum and use max of 0.2 CPU cores. This resulted in much faster loading time of the pods and better performance on the stress run.
+![](/docs/img/autoscalersuccess.png)
+In the Result Tree Graph in jMeter, above 90% of the requests succeeded in the first minute. Looking in the Grafana dashboard, we can see that multiple pods of the room manager service were created and 2 of them take almost equal load.
+![](/docs/img/successautoscaler.png)
+![](/docs/img/autoscalerpodssuccess.png)
+
+
+Looking at the memory usage, it was evenly distributed over the newly created pods.
+![](/docs/img/memoryusage.png)
+Including the bandwidth:
+![](/docs/img/podsusage.png)
+
+Checking the workload dashboard in Grafana, I can also see that on the stress run, two pods were created for the room manager service and both of them take almost the same amount of CPU and memory usage.
+
+*The ones at the bottom were created before and still appear in the dashboard legend.*
+
+![](/docs/img/2podscreation.png)
+
+Checking with the
+```
+kubectl get pods
+```
+command, I was also able to see the newly created pods:
+![](/docs/img/multiplepods.png)
+
+
+Running 3 stress test in total with the current configuration, the deployment of the autoscaler was a success. Looking at the response graph in jmeter, the average response time was 2.8 seconds, with as low as 1.5 seconds request time. The maximum throughput per minute is 2.6 million requests.
+
+![](/docs/img/jmetersuccess3.png)
+
+To conclude that the auto scaling of the deployment was success, I looked at the errors/success ratio of the requests. The scaling of the pods and the response time is important, but it is also crucial to validate the response message and was it successful or not.
+
+During the first runs, before correctly implementing the autoscaler, I got error percentage of around 80% of 574k requests:
+![](/docs/img/80percenterror.png)
+
+After implementing the autoscaler, I managed to reduce the error percentage to 1.36%:
+
+![](/docs/img/1percenterror.png)
+
+Concluding that the autoscaling was success and the current deployment configuration is ready for production.
+
+## Final Findings
+
+From the first run: 
+- I setup the important requests to test and performed stress load test on all GET requests with 15k users. The thread group configuration resulted in very slow performance on my laptop and I switched to 10k users with bigger user load time.
+
+- I saw that the throughput was more than 8 million per minute, which is either very good and the requests are setup with maximum efficiency, or either the jmeter configuration or the requests are not working correctly.
+
+From the second run:
+- I changed the thread group from 10-15k users to 100 users. It is more "real-life" configuration and it would not cause any issues on my laptop.
+
+- It wasn't enough to only test the GET requests, without validating them and test any other methods. I correctly setup http headers and I added POST request for making a booking. The average response time was excellent - 200ms and the maximum of 800ms. The maximum requests per minute were indicated to be 19,000, which for the context of the application is excellent. 
+
+- However, the thread group was much lower in this test and it is still not certain how the app will perform when 10k users are using it. 
+
+From the third run:
+- I explored online solutions for stress testing web applications and used Loadium to perform the stress test on the booking functionality. The results were similar to the previous run, with a peak response time of 800ms and an average of 200ms. The CPU usage on the Kubernetes cluster reached around 40% during the stress test, raising concerns about its performance under high load.
+
+- Although the tests conducted so far have shown promising results, they do not fully guarantee the application's behavior when subjected to a larger number of users. To comprehensively test the application while considering the non-functional requirements, alternative solutions need to be explored for running stress tests.
+
+From the forth run:
+- I focused on concluding the autoscaling capability of the Kubernetes cluster and validating its performance.
+
+- Using jMeter with 1000 users, each sending 10 requests, I observed that after scaling the pods with higher resource limits, the requests started to fail, indicating that the autoscaling was not successful.
+
+- I adjusted the resource limits to lower values (to preserve more resources), and this resulted in faster loading time of the pods and improved performance during the stress run. The autoscaler successfully created multiple pods, and the requests had a success rate of over 90% in the first minute.
+
+- The memory usage was evenly distributed across the newly created pods, and the workload dashboard in Grafana displayed the equal distribution of CPU and memory usage between the two pods created for the room manager service.
+
+- The average response time during the stress test was 2.8 seconds, with a maximum throughput of 2.6 million requests per minute.
+
+- By implementing the autoscaler, the error percentage of requests was significantly reduced from 80% to 1.36%.
+## Future Improvements
+ 
+To enhance the quality and effectiveness of the report, the following improvements can be implemented:
+
+- Provide clear objectives: Clearly state the objectives and goals of the performance testing. This will help readers understand the purpose of the tests and the specific aspects being evaluated
+
+- Include more detailed methodology: Provide a more detailed description of the testing methodology used, including the specific steps followed, tools utilized, and configurations applied. This will help readers replicate the tests and validate the results independently. 
+
+
+- Discuss trade-offs: Discuss any trade-offs made during the testing process, such as adjusting resource limits or changing test configurations. 
+
+
+By incorporating these improvements, the report will become more comprehensive, enabling stakeholders to make informed decisions regarding the application's performance and scalability enhancements.
+
 
 ---
-
 Created on 9th June, 2023.
