@@ -1,7 +1,7 @@
 <h1 align="center">
 StudioNest
 </h1>
-<p align="center">Centered text
+<p align="center">
 This is a web application for booking rehearsal rooms and studios. It enables users to schedule rehearsal times and organizations to offer rooms for rent. This project uses FastAPI for the backend and Next.js for the frontend.
 </p>
 <hr/>
