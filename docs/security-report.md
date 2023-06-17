@@ -124,11 +124,11 @@ SonarQube detected the following critical and high severity vulnerabilities:
 
 ![SonarCloud Medium Risks](/docs/img/mediumrisksonar.png)
 
+In addition, I measured the duplications of code (3.1%), code smells (104) and the test coverage. However due to the time limit I won't fix the code related issues if they are not exposing sensitive data or are at medium/low severity.
+
 ## Fixes and Recommendations
 
 Here are the recommended fixes for the vulnerabilities mentioned above:
-
-
 
 ### `Usage of python:latest image (Snyk)`
 
@@ -183,8 +183,13 @@ These are the vulnerabilities from the Snyk scan after updating the python image
 
 - **Justification**: `There were a lot of console.logs, printing data from the requests with test words, which is really inappropriate for a production build.`
 - **Status**: `Fixed`
-- **Proof of Fix**:
 
 
 I managed to fix all critical issues and reduced the high and mediul vulnerabilities to significantly lower amount, compared to the first scan.
+<hr/>
 
+After fixing some security issues and vulnerabilities from SonarCloud I got A (very secure) status for the reliability, maintainability, security and security review:
+
+![SonarCloud Security Test](/docs/img/sonarcloudfixes.png)
+
+The Quality Gate is still failing, as there is no test coverage detected. However, the main focus was fixing the security issues and leaks amd make sure that there as less vulnerabilities as possible on production.
