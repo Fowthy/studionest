@@ -2,15 +2,15 @@
 
 ## Introduction
 
-This document provides an overview of the RabbitMQ connection setup and the usage of fanout exchanges in our project. The primary purpose of RabbitMQ is to facilitate communication between the Room Manager service and the Booking service, allowing for efficient coordination of CRUD operations on rooms across different MongoDB database instances.
+This document provides an overview of the RabbitMQ connection setup and the usage of fanout exchanges in the project. The primary purpose of RabbitMQ is to create a communication between the microservices, allowing for efficient coordination of CRUD operations on rooms across different MongoDB database instances.
 
 ## RabbitMQ Connection
 
-We have established a connection between the Room Manager service and the Booking service using RabbitMQ, which acts as a reliable message broker. This connection enables seamless communication between the two services, ensuring that room-related operations are synchronized across the system.
+I have established a connection between the Room Manager service and the Booking service using RabbitMQ, which acts as a reliable message broker. This connection enables communication between the two services, ensuring that room-related operations are synchronized across the system.
 
 ## Fanout Exchanges
 
-To implement the communication mechanism, we utilize fanout exchanges in RabbitMQ. Fanout exchanges are designed to broadcast messages to all bound queues without any routing or filtering logic. In our project, we have the following fanout exchanges:
+To implement the communication mechanism, I utilize fanout exchanges in RabbitMQ. Fanout exchanges are designed to broadcast messages to all bound queues without any routing or filtering logic. In the project, I have the following fanout exchanges:
 
 ### 1. Room_Create Exchange
 
@@ -30,8 +30,4 @@ It's important to note that the Room Manager service and the Booking service uti
 
 ## Conclusion
 
-The RabbitMQ connection and the usage of fanout exchanges in our project provide a robust and scalable solution for coordinating CRUD operations on rooms between the Room Manager service and the Booking service. By utilizing different fanout exchanges, we can effectively broadcast room-related events and keep the MongoDB databases of both services synchronized.
-
-Please refer to the relevant code documentation and configurations for further details on how the RabbitMQ connection and fanout exchanges are implemented in our project.
-
-If you have any questions or require further information, please reach out to the project team.
+The RabbitMQ connection and the usage of fanout exchanges in the project provide a robust and scalable solution for coordinating CRUD operations on rooms between the Room Manager service and the Booking service. 
