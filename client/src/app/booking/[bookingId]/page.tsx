@@ -132,7 +132,7 @@ export default function Page({params}: any) {
                     style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
                     Backline
                   </h2>
-                  <BacklineTileGrid backlines={data.backline} authenticated={authenticated} quantity={quantity} setQuantity={setQuantity}/>
+                  <BacklineTileGrid backlines={data.backline} authenticated={authenticated} page={true} quantity={quantity} setQuantity={setQuantity}/>
                 </div>
 
                 <div>
@@ -155,7 +155,6 @@ export default function Page({params}: any) {
                           {data.duration}
                       </Link>
                     </div>
-
                     <div className="flex items-center justify-between py-2">
                       <span className="text-scale-900">Date From</span>
                         <span className="flex items-center space-x-1">

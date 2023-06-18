@@ -11,12 +11,14 @@ export default function BacklineTileGrid({
   authenticated = false,
   hideCategories = false,
   quantity, 
-  setQuantity
+  setQuantity,
+  page = false
 }: {
   backlines: any[]
   authenticated: boolean,
   hideCategories?: boolean,
   quantity: Record<string, number>,
+  page?: boolean,
   setQuantity: React.Dispatch<React.SetStateAction<Record<string, number>>>
 }) {
   let router = useRouter()
@@ -68,7 +70,7 @@ export default function BacklineTileGrid({
                         <p className="text-gray-900 dark:text-gray-50 text-sm text-scale-900">{category.desc} | Price: {category.price}$</p>
                       </div>
                     </div>
-                    {authenticated && (
+                    {authenticated && page != false && (
                     <div className="custom-number-input w-32">
                       <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
                         <button data-action="decrement" onClick={() => decrementQuantity(category._id)} className=" bg-gray-300 dark:bg-gray-600 dark:text-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none">
