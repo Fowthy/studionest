@@ -7,3 +7,4 @@ python-dotenv
 aio_pika
 asyncio
 boto3
+pymongo>=4.6.3 # not directly required, pinned by Snyk to avoid a vulnerability
