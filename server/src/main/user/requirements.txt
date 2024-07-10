@@ -7,3 +7,4 @@ pika
 aio_pika
 python-dotenv
 fastapi_security
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
