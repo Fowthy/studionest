@@ -12,3 +12,4 @@ flower
 boto3 
 python-multipart
 azure-storage-blob
+setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerability
